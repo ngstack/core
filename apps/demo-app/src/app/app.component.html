@@ -19,3 +19,11 @@ Nx is designed to help you create and build enterprise grade Angular application
 <h2>Quick Start & Documentation</h2>
 
 <a href="https://nrwl.io/nx">Watch a 5-minute video on how to get started with Nx.</a>
+
+<ngs-code-editor
+  [(value)]="code"
+  [language]="lang"
+  [options]="options"
+  [readOnly]="readOnly"
+  (valueChanged)="onCodeChanged($event)">
+</ngs-code-editor>

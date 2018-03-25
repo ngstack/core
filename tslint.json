@@ -77,7 +77,7 @@
     "component-selector": [
       true,
       "element",
-      "app",
+      ["app", "ngs"],
       "kebab-case"
     ],
     "no-output-on-prefix": true,
