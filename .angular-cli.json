@@ -57,6 +57,13 @@
       "tags": []
     },
     {
+      "name": "translate",
+      "root": "libs/translate/src",
+      "test": "../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "$workspaceRoot",
       "root": ".",
       "appRoot": ""
