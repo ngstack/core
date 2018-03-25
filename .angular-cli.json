@@ -57,6 +57,13 @@
       "tags": []
     },
     {
+      "name": "code-editor",
+      "root": "libs/code-editor/src",
+      "test": "../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
       "name": "translate",
       "root": "libs/translate/src",
       "test": "../../../test.js",

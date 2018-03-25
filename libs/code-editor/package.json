@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "@ngstack/code-editor",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Denys Vuika",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    },
+    "dest": "dist/@ngstack/code-editor"
+  },
+  "peerDependencies": {
+    "monaco-editor": ">=0.11.1"
+  }
+}

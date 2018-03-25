@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { TranslateModule, TranslateService } from '@ngstack/translate';
+import { CodeEditorModule } from '@ngstack/code-editor';
 
 export function setupTranslateFactory(service: TranslateService): Function {
   return () => service.use('en');
@@ -12,7 +13,8 @@ export function setupTranslateFactory(service: TranslateService): Function {
   imports: [
     BrowserModule,
     NxModule.forRoot(),
-    TranslateModule
+    TranslateModule,
+    CodeEditorModule
   ],
   declarations: [AppComponent],
   providers: [
