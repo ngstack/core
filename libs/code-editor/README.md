@@ -8,7 +8,7 @@ that powers [VS Code](https://github.com/Microsoft/vscode).
 
 ```sh
 npm install monaco-editor
-npm install @ngstack/translate
+npm install @ngstack/code-editor
 ```
 
 ## Integrating with Angular CLI project
