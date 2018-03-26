@@ -37,3 +37,46 @@ import { CodeEditorModule } from '@ngstack/code-editor';
 })
 export class AppModule {}
 ```
+
+Update template to use the `ngs-code-editor`:
+
+```html
+<ngs-code-editor
+  [(value)]="code"
+  [language]="lang"
+  [options]="options"
+  [readOnly]="readOnly"
+  (valueChanged)="onCodeChanged($event)">
+</ngs-code-editor>
+```
+
+Update component controller class and provide corresponding properties and events:
+
+```ts
+export class AppComponent implements OnInit {
+
+  @Input()
+  lang = 'javascript';
+
+  @Input()
+  code = 'var x = 1;';
+
+  @Input()
+  readOnly = false;
+
+  options = {
+    contextmenu: true,
+    minimap: {
+      enabled: true
+    }
+  };
+
+  onCodeChanged(value) {
+    console.log('CODE', this.code);
+  }
+
+  constructor() {}
+
+  ngOnInit() {}
+}
+```
