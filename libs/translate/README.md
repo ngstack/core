@@ -59,3 +59,20 @@ In the main application template, use the following snippet:
   {{ 'TITLE' | translate }}
 </h2>
 ```
+
+## Features
+
+### Translate Pipe
+
+- [x] `<element>{{ 'KEY' | translate }}</element>`
+- [ ] `<element [attribute]="property | translate"></element>`
+- [ ] `<element attribute="{{ property | translate }}"></element>`
+- [ ] `<element [innerHTML]="'KEY' | translate"></element>`
+- [ ] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
+- [ ] `<element>{{ 'FORMAT' | translate:params }}</element>`
+- [ ] `<element [translate]="'KEY'">[text]</element>`
+- [ ] `<element [translate]="'KEY'" [translateParams]="JSON"></element>`
+
+### Translate Service
+
+- TBD
