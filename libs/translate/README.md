@@ -66,22 +66,6 @@ In the main application template, use the following snippet:
 </h2>
 ```
 
-## Custom language without external files
-
-An example for providing translation data from within the application,
-without loading external files.
-
-```ts
-@NgModule({...})
-export class AppModule {
-  constructor(translate: TranslateService) {
-    translate.use('en', {
-      'TITLE': 'Hello from @ngstack/translate!'
-    });
-  }
-}
-```
-
 ## Features
 
 ### Translate Pipe
@@ -97,4 +81,44 @@ export class AppModule {
 
 ### Translate Service
 
-- TBD
+- [x] Translation from code
+- [x] Defining translation data from code
+- [x] Merging multiple translations
+- [ ] Loading data from multiple folders
+- [ ] Configurable cache busting
+- [ ] Lazy loading support
+
+#### Using from code
+
+You can import and use translate service in the code:
+
+```ts
+@Component({...})
+export class MyComponent {
+
+  text: string;
+
+  constructor(translate: TranslateService) {
+
+    this.text = translate.get('SOME.PROPERTY.PATH');
+
+  }
+
+}
+```
+
+#### Custom language without external files
+
+An example for providing translation data from within the application,
+without loading external files.
+
+```ts
+@NgModule({...})
+export class AppModule {
+  constructor(translate: TranslateService) {
+    translate.use('en', {
+      'TITLE': 'Hello from @ngstack/translate!'
+    });
+  }
+}
+```
