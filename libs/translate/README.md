@@ -87,13 +87,13 @@ export class AppModule {
 ### Translate Pipe
 
 - [x] `<element>{{ 'KEY' | translate }}</element>`
-- [ ] `<element [attribute]="property | translate"></element>`
-- [ ] `<element attribute="{{ property | translate }}"></element>`
-- [ ] `<element [innerHTML]="'KEY' | translate"></element>`
+- [x] `<element [attribute]="property | translate"></element>`
+- [x] `<element attribute="{{ property | translate }}"></element>`
+- [x] `<element [innerHTML]="'KEY' | translate"></element>`
 - [ ] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
 - [ ] `<element>{{ 'FORMAT' | translate:params }}</element>`
-- [ ] `<element [translate]="'KEY'">[text]</element>`
-- [ ] `<element [translate]="'KEY'" [translateParams]="JSON"></element>`
+- [ ] `<element [translate]="'KEY'">[translation]</element>`
+- [ ] `<element [translate]="'KEY'" [translateParams]="JSON">[translation]</element>`
 
 ### Translate Service
 
