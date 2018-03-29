@@ -2,6 +2,8 @@
 
 Translation library for Angular applications.
 
+[Live example on Stackblitz](https://stackblitz.com/edit/ngstack-translate-demo)
+
 ## Installing
 
 ```sh
@@ -21,7 +23,10 @@ Create `en.json` file in the `src/app/assets/i18n` folder of your application.
 Import `TranslateModule` into you main application module,
 configure `TranslateService` to start automatically during application startup.
 
+You will also need `HttpClientModule` module dependency.
+
 ```ts
+import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngstack/translate';
 
 export function setupTranslateFactory(service: TranslateService): Function {
@@ -33,6 +38,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
     BrowserModule,
     NxModule.forRoot(),
 
+    HttpClientModule,
     TranslateModule
   ],
   declarations: [AppComponent],
@@ -58,6 +64,22 @@ In the main application template, use the following snippet:
 <h2>
   {{ 'TITLE' | translate }}
 </h2>
+```
+
+## Custom language without external files
+
+An example for providing translation data from within the application,
+without loading external files.
+
+```ts
+@NgModule({...})
+export class AppModule {
+  constructor(translate: TranslateService) {
+    translate.use('en', {
+      'TITLE': 'Hello from @ngstack/translate!'
+    });
+  }
+}
 ```
 
 ## Features
