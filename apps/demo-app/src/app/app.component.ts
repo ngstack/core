@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   };
 
   onCodeChanged(value) {
-    console.log('CODE', this.code);
+    // console.log('CODE', this.code);
   }
 
   constructor() {}

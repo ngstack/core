@@ -90,7 +90,7 @@ export class AppModule {
 - [x] `<element [attribute]="property | translate"></element>`
 - [x] `<element attribute="{{ property | translate }}"></element>`
 - [x] `<element [innerHTML]="'KEY' | translate"></element>`
-- [ ] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
+- [x] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
 - [ ] `<element>{{ 'FORMAT' | translate:params }}</element>`
 - [ ] `<element [translate]="'KEY'">[translation]</element>`
 - [ ] `<element [translate]="'KEY'" [translateParams]="JSON">[translation]</element>`

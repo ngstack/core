@@ -19,17 +19,21 @@ export class TranslateService {
   constructor(private http: HttpClient) {}
 
   get(key: string, params?: any, lang?: string): string {
-    const translation = this.data[lang || this.activeLang] || {};
-    return translation[key] || key;
+    if (key) {
+      const translation = this.data[lang || this.activeLang];
+      return this.getTranslationValue(translation, key);
+    } else {
+      return null;
+    }
   }
 
   use(lang: string, data?: any): Promise<any> {
-
     this._activeLang = lang || this._fallbackLang;
 
     if (lang && data) {
-      this.data[lang] = data;
-      return Promise.resolve(data);
+      return Promise.resolve(
+        this.setTranslation(lang, data)
+      );
     }
 
     const translation = this.data[lang];
@@ -43,14 +47,63 @@ export class TranslateService {
 
       this.http.get<{}>(langPath).subscribe(
         json => {
-          this.data[lang] = Object.assign({}, json || {});
-          resolve(this.data[lang]);
+          resolve(
+            this.setTranslation(lang, json)
+          );
         },
         error => {
-          this.data[lang] = {};
-          resolve(this.data[lang]);
+          resolve(this.data[lang] || {});
         }
       );
     });
+  }
+
+  private getTranslationValue(data: any, key: string): string {
+    if (!data) {
+      return key;
+    }
+
+    const keys = key.split('.');
+    let propKey = '';
+
+    do {
+      propKey += keys.shift();
+      const value = data[propKey];
+      if (value !== undefined && (typeof value === 'object' || !keys.length)) {
+        data = value;
+        propKey = '';
+      } else if (!keys.length) {
+        data = key;
+      } else {
+        propKey += '.';
+      }
+    } while (keys.length);
+
+    return data;
+  }
+
+  private setTranslation(lang: string, data: any): any {
+    let finalResult = this.data[lang] || {};
+    finalResult = this.merge(finalResult, data || {});
+    this.data[lang] = finalResult;
+    return finalResult;
+  }
+
+  private merge(...translations): any {
+    const result = {};
+
+    translations.forEach(translation => {
+      Object.keys(translation).forEach(key => {
+        if (key in result && Array.isArray(result[key])) {
+            result[key] = result[key].concat(translation[key]);
+        } else if (key in result && typeof result[key] === 'object') {
+            result[key] = this.merge(result[key], translation[key]);
+        } else {
+            result[key] = translation[key];
+        }
+      });
+    });
+
+    return result;
   }
 }

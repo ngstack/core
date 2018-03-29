@@ -40,6 +40,16 @@ describe('TranslateService', () => {
     expect(fetched).toEqual({});
   });
 
+  it('should return existing data on fetch error', async () => {
+    spyOn(http, 'get').and.returnValue(Observable.throw('error'));
+
+    const data = { title: 'hello' };
+    await translate.use('en', data);
+
+    const result = await translate.use('en');
+    expect(result).toEqual(data);
+  });
+
   it('should fetch the language file from the correct folder', async () => {
     spyOn(http, 'get').and.returnValue(Observable.of({}));
 
@@ -115,4 +125,132 @@ describe('TranslateService', () => {
     expect(translate.get('KEY')).toBe('KEY');
   });
 
+  it('should merge simple translations', async () => {
+    const version1 = { 'key1': 'value1' };
+    const version2 = { 'key2': 'value2' };
+    const version3 = { 'key3': 'value3' };
+
+    await translate.use('en', version1);
+    await translate.use('en', version2);
+    const result = await translate.use('en', version3);
+
+    expect(result).toEqual({
+      'key1': 'value1',
+      'key2': 'value2',
+      'key3': 'value3'
+    });
+  });
+
+  it('should merge complex translations', async () => {
+    const version1 = { 'key1': 'value1' };
+    const version2 = { 'key2': { 'child1_key': 'child1_value' } };
+    const version3 = { 'key3': { 'child2': { 'sub1': 'sub2' } } };
+
+    await translate.use('en', version1);
+    await translate.use('en', version2);
+    const result = await translate.use('en', version3);
+
+    expect(result).toEqual({
+      'key1': 'value1',
+      'key2': {
+        'child1_key': 'child1_value'
+      },
+      'key3': {
+        'child2': {
+          'sub1': 'sub2'
+        }
+      }
+    });
+  });
+
+  it('should merge arrays', async () => {
+    const version1 = { 'key1': [ 'one', 'two' ] };
+    const version2 = { 'key1': [ 'three', 'four' ] };
+
+    await translate.use('en', version1);
+    const result = await translate.use('en', version2);
+
+    expect(result).toEqual({
+      'key1': [ 'one', 'two', 'three', 'four' ]
+    });
+  });
+
+  it('should merge objects', async () => {
+    const version1 = { 'key1': { 'value1': 'one' } };
+    const version2 = { 'key1': { 'value2': 'two' } };
+
+    await translate.use('en', version1);
+    const result = await translate.use('en', version2);
+
+    expect(result).toEqual({
+      'key1': {
+        'value1': 'one',
+        'value2': 'two'
+      }
+    })
+  });
+
+  it('should overwrite top-level properties', async () => {
+    const version1 = { 'key1': 'value1' };
+    const version2 = { 'key1': 'value2' };
+
+    await translate.use('en', version1);
+    const result = await translate.use('en', version2);
+
+    expect(result).toEqual({
+      'key1': 'value2'
+    });
+  });
+
+  it('should translate by property path', async () => {
+    const data = {
+      'MAIN': {
+        'APPLICATION': {
+          'TITLE': 'Hello there!'
+        }
+      }
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MAIN.APPLICATION.TITLE');
+
+    expect(result).toBe('Hello there!');
+  });
+
+  it('should return key when sub-property missing', async () => {
+    const data = {
+      'MAIN': {
+        'APPLICATION': {}
+      }
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MAIN.APPLICATION.TITLE');
+
+    expect(result).toBe('MAIN.APPLICATION.TITLE');
+  });
+
+  it('should return key for missing property path', () => {
+    const key = 'MAIN.APPLICATION.TITLE';
+    expect(translate.get(key)).toEqual(key);
+  });
+
+  it('should return null if translating with a missing key', () => {
+    expect(translate.get('')).toBeNull();
+    expect(translate.get(null)).toBeNull();
+    expect(translate.get(undefined)).toBeNull();
+  });
+
+  it('should return translate key for separator', () => {
+    expect(translate.get('.')).toEqual('.');
+  });
+
+  it('should translate when key is a property path', async () => {
+    const data = {
+      'MAIN.APPLICATION.TITLE': 'Hello there!'
+    };
+
+    await translate.use('en', data);
+    expect(translate.get('MAIN.APPLICATION.TITLE')).toEqual('Hello there!');
+  });
 });
