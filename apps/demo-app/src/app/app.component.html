@@ -1,35 +1,19 @@
 
 <div style="text-align:center">
-  <h1>
-    Welcome to an Angular CLI app built with Nrwl Nx!
-  </h1>
-  <img width="300" src="assets/nx-logo.png">
+  <h1>Welcome to NgStack components.</h1>
+  An open source toolkit for enterprise Angular applications.
 </div>
 
-<h2>
-  {{ 'TITLE' | translate }}
-</h2>
 
-<p>
-  Formatted: {{ 'FORMATTED.HELLO_MESSAGE' | translate:{ 'username': 'world' } }}
-</p>
+<h2>Components</h2>
 
-<h2>Nx</h2>
+<ul>
+  <li>
+    <a routerLink="/translate">Translate</a>
+  </li>
+  <li>
+    <a routerLink="/code-editor">Code Editor</a>
+  </li>
+</ul>
 
-An open source toolkit for enterprise Angular applications.
-
-Nx is designed to help you create and build enterprise grade Angular applications. It provides an opinionated approach to application project structure and patterns.
-
-<h2>Quick Start & Documentation</h2>
-
-<a href="https://nrwl.io/nx">Watch a 5-minute video on how to get started with Nx.</a>
-
-<h2>Code Editor</h2>
-
-<ngs-code-editor
-  [(value)]="code"
-  [language]="lang"
-  [options]="options"
-  [readOnly]="readOnly"
-  (valueChanged)="onCodeChanged($event)">
-</ngs-code-editor>
+<router-outlet></router-outlet>
