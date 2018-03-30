@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-describe('TranslateService', () => {
+fdescribe('TranslateService', () => {
 
   let translate: TranslateService;
   let http: HttpClient;
@@ -93,11 +93,49 @@ describe('TranslateService', () => {
   });
 
   it('should have fallback lang defined by default', () => {
-    expect(translate.fallbackLang).toBeDefined();
+    expect(translate.fallbackLang).toEqual('en');
+  });
+
+  it('should switch fallback lang value', () => {
+    translate.fallbackLang = 'fr';
+    expect(translate.fallbackLang).toEqual('fr');
+
+    translate.fallbackLang = 'ua';
+    expect(translate.fallbackLang).toEqual('ua');
+  });
+
+  it('should use [en] when setting wrong fallback language', () => {
+    translate.fallbackLang = null;
+    expect(translate.fallbackLang).toEqual('en');
+
+    translate.fallbackLang = '';
+    expect(translate.fallbackLang).toEqual('en');
+
+    translate.fallbackLang = undefined;
+    expect(translate.fallbackLang).toEqual('en');
   });
 
   it('should have active lang defined by default', () => {
-    expect(translate.activeLang).toBeDefined();
+    expect(translate.activeLang).toEqual('en');
+  });
+
+  it('should use fallback lang when setting wrong active lang', () => {
+    translate.activeLang = null;
+    expect(translate.activeLang).toEqual(translate.fallbackLang);
+
+    translate.activeLang = '';
+    expect(translate.activeLang).toEqual(translate.fallbackLang);
+
+    translate.activeLang = undefined;
+    expect(translate.activeLang).toEqual(translate.fallbackLang);
+  });
+
+  it('should switch active lang value', () => {
+    translate.activeLang = 'fr';
+    expect(translate.activeLang).toEqual('fr');
+
+    translate.activeLang = 'ua';
+    expect(translate.activeLang).toEqual('ua');
   });
 
   it('should have active lang set to fallback one by default', () => {
@@ -296,5 +334,58 @@ describe('TranslateService', () => {
     const result = translate.get('MESSAGE_FORMAT', {});
 
     expect(result).toEqual(data.MESSAGE_FORMAT);
+  });
+
+  it('should use fallback language for missing translation', async () => {
+    const en = { MESSAGE: 'hello' };
+    const fr = { };
+
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+
+    const result = translate.get('MESSAGE', null, 'fr');
+    expect(result).toEqual(en.MESSAGE);
+  });
+
+  it('should use format params with fallback value', async () => {
+    const en = { MESSAGE: 'hello, {username}' };
+    const fr = { };
+
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+
+    translate.activeLang = 'fr';
+
+    const result = translate.get('MESSAGE', { username: 'admin' });
+    expect(result).toEqual('hello, admin');
+  });
+
+  it('should return the key if active and fallback translations missing', async () => {
+    const en = { };
+    const fr = { };
+
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+
+    const result = translate.get('MESSAGE', null, 'fr');
+    expect(result).toEqual('MESSAGE');
+  });
+
+  it('should not change active language when setting lang data', async () => {
+    translate.activeLang = 'it';
+
+    const data = { MESSAGE: 'bonjour' };
+    await translate.use('fr', data);
+
+    expect(translate.activeLang).toBe('it');
+  });
+
+  it('should not change fallback language when setting lang data', async () => {
+    translate.fallbackLang = 'it';
+
+    const data = { MESSAGE: 'bonjour' };
+    await translate.use('fr', data);
+
+    expect(translate.fallbackLang).toBe('it');
   });
 });

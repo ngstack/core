@@ -84,6 +84,8 @@ In the main application template, use the following snippet:
 - [x] Translation from code
 - [x] Defining translation data from code
 - [x] Merging multiple translations
+- [x] Automatic fallback for missing translations
+- [ ] Defining supported languages
 - [ ] Loading data from multiple folders
 - [ ] Configurable cache busting
 - [ ] Lazy loading support

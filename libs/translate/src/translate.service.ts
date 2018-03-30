@@ -12,16 +12,26 @@ export class TranslateService {
     return this._fallbackLang;
   }
 
+  set fallbackLang(value: string) {
+    this._fallbackLang = value || 'en';
+  }
+
   get activeLang(): string {
     return this._activeLang;
+  }
+
+  set activeLang(value: string) {
+    this._activeLang = value || this.fallbackLang;
   }
 
   constructor(private http: HttpClient) {}
 
   get(key: string, params?: { [key: string]: string }, lang?: string): string {
     if (key) {
-      const translation = this.data[lang || this.activeLang];
-      const value = this.getTranslationValue(translation, key);
+      let value = this.getValue(lang || this.activeLang, key);
+      if (value === key) {
+        value = this.getValue(this.fallbackLang, key);
+      }
       return this.format(value, params);
     } else {
       return null;
@@ -29,7 +39,6 @@ export class TranslateService {
   }
 
   use(lang: string, data?: any): Promise<any> {
-    this._activeLang = lang || this._fallbackLang;
 
     if (lang && data) {
       return Promise.resolve(
@@ -59,7 +68,8 @@ export class TranslateService {
     });
   }
 
-  private getTranslationValue(data: any, key: string): string {
+  private getValue(lang: string, key: string): string {
+    let data = this.data[lang];
     if (!data) {
       return key;
     }
