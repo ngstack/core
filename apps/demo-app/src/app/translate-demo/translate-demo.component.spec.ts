@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TranslateDemoComponent } from './translate-demo.component';
+import { TranslateModule } from '@ngstack/translate';
 
 describe('TranslateDemoComponent', () => {
   let component: TranslateDemoComponent;
@@ -8,6 +9,7 @@ describe('TranslateDemoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule],
       declarations: [ TranslateDemoComponent ]
     })
     .compileComponents();
