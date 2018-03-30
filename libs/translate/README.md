@@ -87,6 +87,7 @@ In the main application template, use the following snippet:
 - [ ] Loading data from multiple folders
 - [ ] Configurable cache busting
 - [ ] Lazy loading support
+- [ ] Translation cache
 
 #### Using from code
 
