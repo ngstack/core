@@ -8,6 +8,13 @@ export class TranslateService {
   private _fallbackLang = 'en';
   private _activeLang = 'en';
 
+  /**
+   * Disable caching and always download language files.
+   *
+   * Applies cache busting query parameters to urls, for example: '?v=1522426955882'.
+   */
+  disableCache = false;
+
   get fallbackLang(): string {
     return this._fallbackLang;
   }
@@ -53,7 +60,11 @@ export class TranslateService {
     }
 
     return new Promise<any>((resolve, reject) => {
-      const langPath = `assets/i18n/${lang || this._fallbackLang}.json`;
+      let langPath = `assets/i18n/${lang || this._fallbackLang}.json`;
+
+      if (this.disableCache) {
+        langPath += `?v=${Date.now()}`;
+      }
 
       this.http.get<{}>(langPath).subscribe(
         json => {

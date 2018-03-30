@@ -388,4 +388,21 @@ describe('TranslateService', () => {
 
     expect(translate.fallbackLang).toBe('it');
   });
+
+  it('should update url if cache is disabled', async () => {
+    translate.disableCache = true;
+
+    let requested = '';
+
+    spyOn(http, 'get').and.callFake((url: string) => {
+      requested = url;
+      return Observable.of({});
+    });
+
+    await translate.use('en');
+
+    const match = requested.match(/(\?v=\d+)/g);
+    expect(match).toBeDefined();
+    expect(match.length).toBe(1);
+  });
 });

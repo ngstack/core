@@ -87,7 +87,7 @@ In the main application template, use the following snippet:
 - [x] Automatic fallback for missing translations
 - [ ] Defining supported languages
 - [ ] Loading data from multiple folders
-- [ ] Configurable cache busting
+- [x] Configurable cache busting
 - [ ] Lazy loading support
 - [ ] Translation cache
 
@@ -168,4 +168,17 @@ Should produce the following result at runtime:
 
 ```text
 Hello, world!
+```
+
+## Advanced examples
+
+### Cache busting
+
+You can disable browser caching and force application always load translation files by using `TranslateService.disableCache` property.
+
+```ts
+export function setupTranslateFactory(service: TranslateService): Function {
+  service.disableCache = true;
+  return () => service.use('en');
+}
 ```

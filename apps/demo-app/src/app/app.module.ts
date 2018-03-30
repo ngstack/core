@@ -6,6 +6,7 @@ import { TranslateModule, TranslateService } from '@ngstack/translate';
 import { CodeEditorModule } from '@ngstack/code-editor';
 
 export function setupTranslateFactory(service: TranslateService): Function {
+  // service.disableCache = true;
   return () => service.use('en');
 }
 
