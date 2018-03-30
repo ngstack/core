@@ -1,5 +1,10 @@
 # NgStack
 
+## Components
+
+- [Translate](https://github.com/ngstack/core/tree/master/libs/translate): translation library
+- [Code Editor](https://github.com/ngstack/core/tree/master/libs/code-editor): code editing component based on the editor that powers Visual Studio Code
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) using [Nrwl Nx](https://nrwl.io/nx).
 
 ## Nrwl Extensions for Angular (Nx)
