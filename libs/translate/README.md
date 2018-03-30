@@ -107,6 +107,22 @@ export class MyComponent {
 }
 ```
 
+#### Custom language without external files
+
+An example for providing translation data from within the application,
+without loading external files.
+
+```ts
+@NgModule({...})
+export class AppModule {
+  constructor(translate: TranslateService) {
+    translate.use('en', {
+      'TITLE': 'Hello from @ngstack/translate!'
+    });
+  }
+}
+```
+
 ### Formatted translations
 
 You can use runtime string substitution when translating text
@@ -149,20 +165,4 @@ Should produce the following result at runtime:
 
 ```text
 Hello, world!
-```
-
-#### Custom language without external files
-
-An example for providing translation data from within the application,
-without loading external files.
-
-```ts
-@NgModule({...})
-export class AppModule {
-  constructor(translate: TranslateService) {
-    translate.use('en', {
-      'TITLE': 'Hello from @ngstack/translate!'
-    });
-  }
-}
 ```
