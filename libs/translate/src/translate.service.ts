@@ -18,10 +18,11 @@ export class TranslateService {
 
   constructor(private http: HttpClient) {}
 
-  get(key: string, params?: any, lang?: string): string {
+  get(key: string, params?: { [key: string]: string }, lang?: string): string {
     if (key) {
       const translation = this.data[lang || this.activeLang];
-      return this.getTranslationValue(translation, key);
+      const value = this.getTranslationValue(translation, key);
+      return this.format(value, params);
     } else {
       return null;
     }
@@ -103,6 +104,21 @@ export class TranslateService {
         }
       });
     });
+
+    return result;
+  }
+
+  private format(str: string, params: { [key: string]: string }): string {
+    let result = str;
+
+    if (params) {
+      Object.keys(params).forEach(key => {
+        const value = params[key];
+        const template = new RegExp('{' + key + '}', 'gm');
+
+        result = result.replace(template, value);
+      });
+    }
 
     return result;
   }

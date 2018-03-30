@@ -1,3 +1,6 @@
 {
-  "TITLE": "Hello from NgStack/translate!"
+  "TITLE": "Hello from NgStack/translate!",
+  "FORMATTED": {
+    "HELLO_MESSAGE": "Hello, {username}!"
+  }
 }

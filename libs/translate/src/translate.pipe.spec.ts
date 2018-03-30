@@ -24,4 +24,14 @@ describe('TranslatePipe', () => {
     const result = pipe.transform('hello');
     expect(result).toEqual('bonjour');
   });
+
+  it('should use translate params to transform value', () => {
+    spyOn(translate, 'get').and.returnValue('bonjour');
+
+    const params = { some: 'param' };
+    const result = pipe.transform('hello', params);
+
+    expect(translate.get).toHaveBeenCalledWith('hello', params);
+    expect(result).toEqual('bonjour');
+  });
 });

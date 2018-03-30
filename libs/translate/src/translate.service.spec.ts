@@ -253,4 +253,48 @@ describe('TranslateService', () => {
     await translate.use('en', data);
     expect(translate.get('MAIN.APPLICATION.TITLE')).toEqual('Hello there!');
   });
+
+  it('should use translate using format params', async () => {
+    const data = {
+      'MESSAGE_FORMAT': 'Hello, {username}!'
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MESSAGE_FORMAT', { 'username': 'Denys' });
+
+    expect(result).toEqual('Hello, Denys!');
+  });
+
+  it('should use multiple format params', async () => {
+    const data = {
+      'MESSAGE_FORMAT': '{message}, {username}!'
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MESSAGE_FORMAT', { 'message': 'Hello', 'username': 'Denys' });
+
+    expect(result).toEqual('Hello, Denys!');
+  });
+
+  it('should use original string when format params not provided', async () => {
+    const data = {
+      'MESSAGE_FORMAT': 'Hello, {username}!'
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MESSAGE_FORMAT', null);
+
+    expect(result).toEqual(data.MESSAGE_FORMAT);
+  });
+
+  it('should use original string when format params are empty', async () => {
+    const data = {
+      'MESSAGE_FORMAT': 'Hello, {username}!'
+    };
+
+    await translate.use('en', data);
+    const result = translate.get('MESSAGE_FORMAT', {});
+
+    expect(result).toEqual(data.MESSAGE_FORMAT);
+  });
 });

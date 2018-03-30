@@ -75,7 +75,7 @@ In the main application template, use the following snippet:
 - [x] `<element attribute="{{ property | translate }}"></element>`
 - [x] `<element [innerHTML]="'KEY' | translate"></element>`
 - [x] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
-- [ ] `<element>{{ 'FORMAT' | translate:params }}</element>`
+- [x] `<element>{{ 'FORMAT' | translate:params }}</element>`
 - [ ] `<element [translate]="'KEY'">[translation]</element>`
 - [ ] `<element [translate]="'KEY'" [translateParams]="JSON">[translation]</element>`
 
@@ -105,6 +105,50 @@ export class MyComponent {
   }
 
 }
+```
+
+### Formatted translations
+
+You can use runtime string substitution when translating text
+
+```json
+{
+  "FORMATTED": {
+    "HELLO_MESSAGE": "Hello, {username}!"
+  }
+}
+```
+
+Then in the HTML:
+
+```html
+<div>{{ 'FORMATTED.HELLO_MESSAGE' | translate:{ 'username': 'world' } }}</div>
+```
+
+Or in the Code:
+
+```ts
+@Component({...})
+export class MyComponent {
+
+  text: string;
+
+  constructor(translate: TranslateService) {
+
+    this.text = translate.get(
+      'FORMATTED.HELLO_MESSAGE',
+      { username: 'world' }
+    );
+
+  }
+
+}
+```
+
+Should produce the following result at runtime:
+
+```text
+Hello, world!
 ```
 
 #### Custom language without external files

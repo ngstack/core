@@ -23,7 +23,8 @@
     "postinstall": "./node_modules/.bin/nx postinstall",
     "start:demo": "ng serve --app=demo-app --open",
     "build:translate": "ng-packagr -p libs/translate/package.json",
-    "build:code-editor": "ng-packagr -p libs/code-editor/package.json"
+    "build:code-editor": "ng-packagr -p libs/code-editor/package.json",
+    "test:coverage": "ng test --code-coverage"
   },
   "private": true,
   "dependencies": {
