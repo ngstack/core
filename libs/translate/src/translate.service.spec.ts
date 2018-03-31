@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-fdescribe('TranslateService', () => {
+describe('TranslateService', () => {
   let translate: TranslateService;
   let http: HttpClient;
 
