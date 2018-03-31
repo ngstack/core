@@ -84,6 +84,7 @@ In the main application template, use the following snippet:
 * Translation from code
 * Defining translation data from code
 * Merging multiple translations
+* Loading translations from multiple locations
 * Automatic fallback for missing translations
 * Defining supported languages
 * Configurable cache busting
@@ -184,6 +185,20 @@ export function setupTranslateFactory(service: TranslateService): Function {
   return () => service.use('en');
 }
 ```
+
+### Loading from multiple locations
+
+To provide multiple locations use the `TranslateService.translatePaths` collection property.
+
+```ts
+export function setupTranslateFactory(service: TranslateService): Function {
+  service.translatePaths = ['assets/lib1/i18n', 'assets/lib2/i18n'];
+  return () => service.use('en');
+}
+```
+
+The files are fetched and merged together in the order of declarations,
+and applied on the top of the default data loaded from `TranslateService.translationRoot` path.
 
 ### Cache busting
 

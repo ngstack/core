@@ -530,4 +530,39 @@ describe('TranslateService', () => {
 
     expect(http.get).toHaveBeenCalledWith('/some/path/en.json');
   });
+
+  it('should fetch and merge translations from multiple paths', async () => {
+    const httpMock = spyOn(http, 'get').and.returnValues(
+      Observable.of({ key1: 'value1' }),
+      Observable.of({ key2: 'value2' })
+    );
+
+    translate.translatePaths = ['custom/path'];
+    const result = await translate.use('en');
+
+    expect(result).toEqual({
+      key1: 'value1',
+      key2: 'value2'
+    });
+
+    expect(httpMock.calls.argsFor(0)).toEqual([
+      `${translate.translationRoot}/en.json`
+    ]);
+
+    expect(httpMock.calls.argsFor(1)).toEqual([`custom/path/en.json`]);
+  });
+
+  it('should fetch single translation when custom paths set to null', async () => {
+    const data = { key1: 'value1' };
+    spyOn(http, 'get').and.returnValues(Observable.of(data));
+
+    translate.translatePaths = null;
+    const result = await translate.use('en');
+
+    expect(result).toEqual(data);
+    expect(http.get).toHaveBeenCalledTimes(1);
+    expect(http.get).toHaveBeenCalledWith(
+      `${translate.translationRoot}/en.json`
+    );
+  });
 });

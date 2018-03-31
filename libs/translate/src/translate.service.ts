@@ -20,7 +20,7 @@ export class TranslateService {
   disableCache = false;
 
   /**
-   * Define supported languages.
+   * List of supported languages.
    *
    * The service will attempt to load resource files only for given set of languages,
    * and will automatically use fallback language for all unspecified values.
@@ -30,6 +30,17 @@ export class TranslateService {
    */
   supportedLangs: string[] = [];
 
+  /**
+   * List of extra paths to look for translation files.
+   *
+   * By default this property is empty.
+   * The value of `translationRoot` property is always taken into account.
+   */
+  translatePaths: string[] = [];
+
+  /**
+   * The fallback language to use when a resource string for the active language is not available.
+   */
   get fallbackLang(): string {
     return this._fallbackLang;
   }
@@ -38,6 +49,9 @@ export class TranslateService {
     this._fallbackLang = value || 'en';
   }
 
+  /**
+   * The language to use for the translations.
+   */
   get activeLang(): string {
     return this._activeLang;
   }
@@ -78,9 +92,9 @@ export class TranslateService {
     }
   }
 
-  use(lang: string, data?: any): Promise<any> {
+  async use(lang: string, data?: any): Promise<any> {
     if (lang && data) {
-      return Promise.resolve(this.setTranslation(lang, data));
+      return this.setTranslation(lang, data);
     }
 
     let translation = this.data[lang];
@@ -89,13 +103,18 @@ export class TranslateService {
     }
 
     if (translation && Object.keys(translation).length > 0) {
-      return Promise.resolve(translation);
+      return translation;
     }
 
     const fileName = `${lang || this.fallbackLang}.json`;
-    const filePath = `${this.translationRoot}/${fileName}`;
+    const filePaths = [this.translationRoot, ...(this.translatePaths || [])];
 
-    return this.load(lang, filePath);
+    for (const path of filePaths) {
+      const filePath = `${path}/${fileName}`;
+      await this.load(lang, filePath);
+    }
+
+    return this.data[lang] || {};
   }
 
   private load(lang: string, path: string): Promise<any> {
