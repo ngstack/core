@@ -2,7 +2,10 @@
 
 Translation library for Angular applications.
 
-[Live example on Stackblitz](https://stackblitz.com/edit/ngstack-translate-demo)
+## Live demos
+
+- [Angular example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-angular)
+- [Ionic example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-ionic)
 
 ## Installing
 
@@ -70,24 +73,22 @@ In the main application template, use the following snippet:
 
 ### Translate Pipe
 
-- [x] `<element>{{ 'KEY' | translate }}</element>`
-- [x] `<element [attribute]="property | translate"></element>`
-- [x] `<element attribute="{{ property | translate }}"></element>`
-- [x] `<element [innerHTML]="'KEY' | translate"></element>`
-- [x] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
-- [x] `<element>{{ 'FORMAT' | translate:params }}</element>`
+- `<element>{{ 'KEY' | translate }}</element>`
+- `<element [attribute]="property | translate"></element>`
+- `<element attribute="{{ property | translate }}"></element>`
+- `<element [innerHTML]="'KEY' | translate"></element>`
+- `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
+- `<element>{{ 'FORMAT' | translate:params }}</element>`
 
 ### Translate Service
 
-- [x] Translation from code
-- [x] Defining translation data from code
-- [x] Merging multiple translations
-- [x] Automatic fallback for missing translations
-- [x] Defining supported languages
-- [ ] Loading data from multiple folders
-- [x] Configurable cache busting
-- [x] Lazy loading support
-- [ ] Translation cache
+- Translation from code
+- Defining translation data from code
+- Merging multiple translations
+- Automatic fallback for missing translations
+- Defining supported languages
+- Configurable cache busting
+- Lazy loading support
 
 #### Using from code
 
