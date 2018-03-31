@@ -85,7 +85,7 @@ In the main application template, use the following snippet:
 - [x] Defining translation data from code
 - [x] Merging multiple translations
 - [x] Automatic fallback for missing translations
-- [ ] Defining supported languages
+- [x] Defining supported languages
 - [ ] Loading data from multiple folders
 - [x] Configurable cache busting
 - [ ] Lazy loading support
@@ -170,7 +170,7 @@ Should produce the following result at runtime:
 Hello, world!
 ```
 
-## Advanced examples
+## Advanced topics
 
 ### Cache busting
 
@@ -181,4 +181,54 @@ export function setupTranslateFactory(service: TranslateService): Function {
   service.disableCache = true;
   return () => service.use('en');
 }
+```
+
+### Restricting supported languages
+
+It is possible to restrict supported languages to a certain set of values.
+You can avoid unnecessary HTTP calls by providing `TranslateService.supportedLangs` values.
+
+```ts
+export function setupTranslateFactory(service: TranslateService): Function {
+  service.supportedLangs = ['fr', 'de'];
+  return () => service.use('en');
+}
+```
+
+The service will attempt to load resource files only for given set of languages,
+and will automatically use fallback language for all unspecified values.
+
+By default this property is empty and service is going to probe all language files.
+Active and Fallback languages are always taken into account, even if you do not specify them in the list.
+
+### Using with your own pipes
+
+You are not restricted to using only `TranslatePipe`.
+It is possible to use `TranslateService` with your own implementations as well.
+
+You can see the basic pipe implementation below:
+
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+import { TranslateService } from '@ngstack/translate';
+
+@Pipe({
+  name: 'myTranslate',
+  pure: false
+})
+export class CustomTranslatePipe implements PipeTransform {
+  constructor(private translate: TranslateService) {}
+
+  transform(key: string, params?: { [key: string]: string }): string {
+    return this.translate.get(key, params);
+  }
+}
+```
+
+Then in the HTML templates you can use your pipe like following:
+
+```html
+<p>
+  Custom Pipe: {{ 'TITLE' | myTranslate }}
+</p>
 ```

@@ -151,12 +151,15 @@ describe('TranslateService', () => {
   });
 
   it('should get translation for the given language', async () => {
-    const data_en = { title: 'hello' };
-    const data_fr = { title: 'bonjour' };
-    await translate.use('en', data_en);
-    await translate.use('fr', data_fr);
+    const en = { title: 'hello' };
+    const fr = { title: 'bonjour' };
 
-    expect(translate.get('title', null, 'fr')).toEqual(data_fr.title);
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+
+    const result = translate.get('title', null, 'fr');
+
+    expect(result).toEqual(fr.title);
   });
 
   it('should return key for missing translation', () => {
@@ -404,5 +407,73 @@ describe('TranslateService', () => {
     const match = requested.match(/(\?v=\d+)/g);
     expect(match).toBeDefined();
     expect(match.length).toBe(1);
+  });
+
+  it('should support all languages by default', () => {
+    expect(translate.supportedLangs).toEqual([]);
+  });
+
+  it('should fetch translation if custom data is null', async () => {
+    const data = { 'TITLE': 'hello there' };
+    spyOn(http, 'get').and.returnValue(Observable.of(data));
+
+    const result = await translate.use('en', null);
+    expect(result).toEqual(data);
+    expect(http.get).toHaveBeenCalled();
+  });
+
+  it('should fetch translation if the cached one is empty', async () => {
+    await translate.use('en', {});
+
+    const data = { 'TITLE': 'hello there' };
+    spyOn(http, 'get').and.returnValue(Observable.of(data));
+
+    const result = await translate.use('en');
+    expect(result).toEqual(data);
+    expect(http.get).toHaveBeenCalled();
+  });
+
+  it('should fetch fallback translation if lang is not supported', async () => {
+    const en = { title: 'en title' };
+
+    spyOn(http, 'get').and.returnValue(Observable.of(en));
+
+    translate.supportedLangs = ['ua'];
+    const result = await translate.use('fr');
+
+    expect(result).toEqual(en);
+    expect(http.get).toHaveBeenCalled();
+  });
+
+  it('should use cached fallback translation if lang is not supported', async () => {
+    const en = { title: 'en title' };
+    await translate.use('en', en);
+
+    spyOn(http, 'get').and.returnValue(Observable.of({}));
+
+    translate.supportedLangs = ['ua'];
+    const result = await translate.use('fr');
+
+    expect(result).toEqual(en);
+    expect(http.get).not.toHaveBeenCalled();
+  });
+
+  it('should use fallback translation if lang is not supported', async () => {
+    const en = { title: 'en title' };
+    const fr = { title: 'fr title' };
+    const ua = { title: 'ua title' }
+
+    translate.supportedLangs = ['ua'];
+
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+    await translate.use('ua', ua);
+
+
+    let result = translate.get('title', null, 'ua');
+    expect(result).toEqual(ua.title);
+
+    result = translate.get('title', null, 'fr');
+    expect(result).toEqual(en.title);
   });
 });

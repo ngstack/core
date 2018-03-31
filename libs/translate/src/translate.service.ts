@@ -15,6 +15,17 @@ export class TranslateService {
    */
   disableCache = false;
 
+  /**
+   * Define supported languages.
+   *
+   * The service will attempt to load resource files only for given set of languages,
+   * and will automatically use fallback language for all unspecified values.
+   *
+   * By default this property is empty and service is going to probe all language files.
+   * Active and Fallback languages are always taken into account even if you do not specify them in the list.
+   */
+  supportedLangs: string[] = [];
+
   get fallbackLang(): string {
     return this._fallbackLang;
   }
@@ -53,9 +64,12 @@ export class TranslateService {
       );
     }
 
-    const translation = this.data[lang];
+    let translation = this.data[lang];
+    if (this.isNotSupported(lang)) {
+      translation = this.data[this.fallbackLang];
+    }
 
-    if (translation) {
+    if (translation && Object.keys(translation).length > 0) {
       return Promise.resolve(translation);
     }
 
@@ -79,8 +93,20 @@ export class TranslateService {
     });
   }
 
+  private isNotSupported(lang): boolean {
+    return (
+      lang !== this.fallbackLang &&
+      lang !== this.activeLang &&
+      (this.supportedLangs && this.supportedLangs.length > 0 && !this.supportedLangs.includes(lang))
+    );
+  }
+
   private getValue(lang: string, key: string): string {
     let data = this.data[lang];
+    if (this.isNotSupported(lang)) {
+      data = this.data[this.fallbackLang];
+    }
+
     if (!data) {
       return key;
     }

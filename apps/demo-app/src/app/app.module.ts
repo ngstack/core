@@ -7,6 +7,7 @@ import { TranslateModule, TranslateService } from '@ngstack/translate';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { TranslateDemoComponent } from './translate-demo/translate-demo.component';
 import { CodeEditorDemoComponent } from './code-editor-demo/code-editor-demo.component';
+import { CustomTranslatePipe } from './translate-demo/custom-translate.pipe';
 
 export function setupTranslateFactory(service: TranslateService): Function {
   // service.disableCache = true;
@@ -32,7 +33,7 @@ const routes: Route[] = [
     TranslateModule,
     CodeEditorModule
   ],
-  declarations: [AppComponent, TranslateDemoComponent, CodeEditorDemoComponent],
+  declarations: [AppComponent, TranslateDemoComponent, CodeEditorDemoComponent, CustomTranslatePipe],
   providers: [
     TranslateService,
     {
