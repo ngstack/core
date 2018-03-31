@@ -57,11 +57,8 @@ export class TranslateService {
   }
 
   use(lang: string, data?: any): Promise<any> {
-
     if (lang && data) {
-      return Promise.resolve(
-        this.setTranslation(lang, data)
-      );
+      return Promise.resolve(this.setTranslation(lang, data));
     }
 
     let translation = this.data[lang];
@@ -82,9 +79,7 @@ export class TranslateService {
 
       this.http.get<{}>(langPath).subscribe(
         json => {
-          resolve(
-            this.setTranslation(lang, json)
-          );
+          resolve(this.setTranslation(lang, json));
         },
         error => {
           resolve(this.data[lang] || {});
@@ -97,7 +92,9 @@ export class TranslateService {
     return (
       lang !== this.fallbackLang &&
       lang !== this.activeLang &&
-      (this.supportedLangs && this.supportedLangs.length > 0 && !this.supportedLangs.includes(lang))
+      (this.supportedLangs &&
+        this.supportedLangs.length > 0 &&
+        !this.supportedLangs.includes(lang))
     );
   }
 
@@ -143,11 +140,11 @@ export class TranslateService {
     translations.forEach(translation => {
       Object.keys(translation).forEach(key => {
         if (key in result && Array.isArray(result[key])) {
-            result[key] = result[key].concat(translation[key]);
+          result[key] = result[key].concat(translation[key]);
         } else if (key in result && typeof result[key] === 'object') {
-            result[key] = this.merge(result[key], translation[key]);
+          result[key] = this.merge(result[key], translation[key]);
         } else {
-            result[key] = translation[key];
+          result[key] = translation[key];
         }
       });
     });

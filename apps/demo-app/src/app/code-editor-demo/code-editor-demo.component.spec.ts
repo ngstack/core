@@ -7,13 +7,14 @@ describe('CodeEditorDemoComponent', () => {
   let component: CodeEditorDemoComponent;
   let fixture: ComponentFixture<CodeEditorDemoComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CodeEditorModule],
-      declarations: [ CodeEditorDemoComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [CodeEditorModule],
+        declarations: [CodeEditorDemoComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CodeEditorDemoComponent);

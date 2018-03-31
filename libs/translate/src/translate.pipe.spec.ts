@@ -4,7 +4,6 @@ import { TranslateService } from './translate.service';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('TranslatePipe', () => {
-
   let translate: TranslateService;
   let pipe: TranslatePipe;
 

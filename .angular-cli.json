@@ -37,7 +37,11 @@
       "assets": [
         "assets",
         "favicon.ico",
-        { "glob": "**/*", "input": "../../../node_modules/monaco-editor/min", "output": "./assets/monaco" }
+        {
+          "glob": "**/*",
+          "input": "../../../node_modules/monaco-editor/min",
+          "output": "./assets/monaco"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -68,6 +72,13 @@
     {
       "name": "translate",
       "root": "libs/translate/src",
+      "test": "../../../test.js",
+      "appRoot": "",
+      "tags": []
+    },
+    {
+      "name": "translate-lazy-demo",
+      "root": "libs/translate-lazy-demo/src",
       "test": "../../../test.js",
       "appRoot": "",
       "tags": []

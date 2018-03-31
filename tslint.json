@@ -94,6 +94,9 @@
     "nx-enforce-module-boundaries": [
       true,
       {
+        "lazyLoad": [
+          "translate-lazy-demo"
+        ],
         "allow": [],
         "depConstraints": [
           { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }

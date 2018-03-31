@@ -39,7 +39,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
     NxModule.forRoot(),
 
     HttpClientModule,
-    TranslateModule
+    TranslateModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [
@@ -76,8 +76,6 @@ In the main application template, use the following snippet:
 - [x] `<element [innerHTML]="'KEY' | translate"></element>`
 - [x] `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
 - [x] `<element>{{ 'FORMAT' | translate:params }}</element>`
-- [ ] `<element [translate]="'KEY'">[translation]</element>`
-- [ ] `<element [translate]="'KEY'" [translateParams]="JSON">[translation]</element>`
 
 ### Translate Service
 
@@ -88,7 +86,7 @@ In the main application template, use the following snippet:
 - [x] Defining supported languages
 - [ ] Loading data from multiple folders
 - [x] Configurable cache busting
-- [ ] Lazy loading support
+- [x] Lazy loading support
 - [ ] Translation cache
 
 #### Using from code
@@ -232,3 +230,11 @@ Then in the HTML templates you can use your pipe like following:
   Custom Pipe: {{ 'TITLE' | myTranslate }}
 </p>
 ```
+
+## Lazy Loading
+
+To enable Lazy Loading
+use `TranslateModule.forRoot()` in the main application,
+and `TranslateModule.forChild()` in all lazy-loaded feature modules.
+
+For more details please refer to [Lazy Loading Feature Modules](https://angular.io/guide/lazy-loading-ngmodules)

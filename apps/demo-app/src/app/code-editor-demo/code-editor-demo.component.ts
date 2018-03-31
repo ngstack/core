@@ -6,15 +6,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./code-editor-demo.component.css']
 })
 export class CodeEditorDemoComponent implements OnInit {
+  @Input() lang = 'javascript';
 
-  @Input()
-  lang = 'javascript';
+  @Input() code = 'var x = 1;';
 
-  @Input()
-  code = 'var x = 1;';
-
-  @Input()
-  readOnly = false;
+  @Input() readOnly = false;
 
   options = {
     contextmenu: true,
@@ -27,9 +23,7 @@ export class CodeEditorDemoComponent implements OnInit {
     // console.log('CODE', this.code);
   }
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

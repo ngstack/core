@@ -1,4 +1,18 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, OnChanges, OnDestroy, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+  OnChanges,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges
+} from '@angular/core';
 
 declare const monaco: any;
 // declare const require: any;
@@ -11,10 +25,9 @@ declare const monaco: any;
   encapsulation: ViewEncapsulation.None,
   // tslint:disable-next-line:use-host-property-decorator
   host: { class: 'ngs-code-editor' }
-
 })
-export class CodeEditorComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit  {
-
+export class CodeEditorComponent
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   private _editor: any;
   private _value = '';
 
@@ -27,8 +40,7 @@ export class CodeEditorComponent implements OnInit, OnChanges, OnDestroy, AfterV
     }
   };
 
-  @ViewChild('editor')
-  editorContent: ElementRef;
+  @ViewChild('editor') editorContent: ElementRef;
 
   @Input()
   set value(v: string) {
@@ -43,23 +55,17 @@ export class CodeEditorComponent implements OnInit, OnChanges, OnDestroy, AfterV
     return this._value;
   }
 
-  @Input()
-  language = 'javascript';
+  @Input() language = 'javascript';
 
-  @Input()
-  options = {};
+  @Input() options = {};
 
-  @Input()
-  readOnly = false;
+  @Input() readOnly = false;
 
-  @Output()
-  valueChanged = new EventEmitter();
+  @Output() valueChanged = new EventEmitter();
 
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     if (this._editor) {
@@ -75,7 +81,10 @@ export class CodeEditorComponent implements OnInit, OnChanges, OnDestroy, AfterV
 
     if (changes && changes.language && !changes.language.firstChange) {
       if (this._editor) {
-        monaco.editor.setModelLanguage(this._editor.getModel(), changes.language.currentValue);
+        monaco.editor.setModelLanguage(
+          this._editor.getModel(),
+          changes.language.currentValue
+        );
       }
     }
 
@@ -91,7 +100,7 @@ export class CodeEditorComponent implements OnInit, OnChanges, OnDestroy, AfterV
   ngAfterViewInit() {
     const onGotAmdLoader = () => {
       // Load monaco
-      (<any>window).require.config({ paths: { 'vs': 'assets/monaco/vs' } });
+      (<any>window).require.config({ paths: { vs: 'assets/monaco/vs' } });
       (<any>window).require(['vs/editor/editor.main'], () => {
         this.initMonaco();
       });

@@ -8,13 +8,14 @@ describe('TranslateDemoComponent', () => {
   let component: TranslateDemoComponent;
   let fixture: ComponentFixture<TranslateDemoComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [TranslateModule],
-      declarations: [ CustomTranslatePipe, TranslateDemoComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        imports: [TranslateModule.forRoot()],
+        declarations: [CustomTranslatePipe, TranslateDemoComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslateDemoComponent);

@@ -20,6 +20,10 @@ const routes: Route[] = [
     component: TranslateDemoComponent
   },
   {
+    path: 'translate-lazy',
+    loadChildren: '@ngstack/translate-lazy-demo/src/translate-lazy-demo.module#TranslateLazyDemoModule'
+  },
+  {
     path: 'code-editor',
     component: CodeEditorDemoComponent
   }
@@ -30,10 +34,15 @@ const routes: Route[] = [
     BrowserModule,
     NxModule.forRoot(),
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
-    TranslateModule,
+    TranslateModule.forRoot(),
     CodeEditorModule
   ],
-  declarations: [AppComponent, TranslateDemoComponent, CodeEditorDemoComponent, CustomTranslatePipe],
+  declarations: [
+    AppComponent,
+    TranslateDemoComponent,
+    CodeEditorDemoComponent,
+    CustomTranslatePipe
+  ],
   providers: [
     TranslateService,
     {
