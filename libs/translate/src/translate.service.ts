@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+export interface TranslateParams {
+  [key: string]: string;
+}
+
 @Injectable()
 export class TranslateService {
   private data: { [key: string]: any } = {};
@@ -50,7 +54,7 @@ export class TranslateService {
 
   constructor(private http: HttpClient) {}
 
-  get(key: string, params?: { [key: string]: string }, lang?: string): string {
+  get(key: string, params?: TranslateParams, lang?: string): string {
     if (key) {
       let value = this.getValue(lang || this.activeLang, key);
       if (value === key) {
@@ -76,14 +80,17 @@ export class TranslateService {
       return Promise.resolve(translation);
     }
 
-    return new Promise<any>((resolve, reject) => {
-      let langPath = `assets/i18n/${lang || this._fallbackLang}.json`;
+    const langPath = `assets/i18n/${lang || this._fallbackLang}.json`;
+    return this.load(lang, langPath);
+  }
 
+  private load(lang: string, path: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
       if (this.disableCache) {
-        langPath += `?v=${Date.now()}`;
+        path += `?v=${Date.now()}`;
       }
 
-      this.http.get<{}>(langPath).subscribe(
+      this.http.get<{}>(path).subscribe(
         json => {
           resolve(this.setTranslation(lang, json));
         },
@@ -158,7 +165,7 @@ export class TranslateService {
     return result;
   }
 
-  private format(str: string, params: { [key: string]: string }): string {
+  private format(str: string, params: TranslateParams): string {
     let result = str;
 
     if (params) {
