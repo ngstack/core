@@ -382,6 +382,7 @@ describe('TranslateService', () => {
   });
 
   it('should not change active language when setting lang data', async () => {
+    spyOn(http, 'get').and.returnValue(Observable.of({}));
     translate.activeLang = 'it';
 
     const data = { MESSAGE: 'bonjour' };
@@ -481,5 +482,24 @@ describe('TranslateService', () => {
 
     result = translate.get('title', null, 'fr');
     expect(result).toEqual(en.title);
+  });
+
+  it('should automatically use new translation on language change', async () => {
+    const en = { title: 'en title' };
+    const fr = { title: 'fr title' };
+
+    await translate.use('en', en);
+    await translate.use('fr', fr);
+
+    expect(translate.get('title')).toBe(en.title);
+    translate.activeLang = 'fr';
+    expect(translate.get('title')).toBe(fr.title);
+  });
+
+  it('should not switch to translation when setting same active language', () => {
+    spyOn(translate, 'use').and.returnValue(Promise.resolve({}));
+
+    translate.activeLang = 'en';
+    expect(translate.use).not.toHaveBeenCalled();
   });
 });

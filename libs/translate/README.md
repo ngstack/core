@@ -4,8 +4,8 @@ Translation library for Angular applications.
 
 ## Live demos
 
-- [Angular example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-angular)
-- [Ionic example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-ionic)
+* [Angular example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-angular)
+* [Ionic example (Stackblitz)](https://stackblitz.com/edit/ngstack-translate-ionic)
 
 ## Installing
 
@@ -46,7 +46,6 @@ export function setupTranslateFactory(service: TranslateService): Function {
   ],
   declarations: [AppComponent],
   providers: [
-
     TranslateService,
     {
       provide: APP_INITIALIZER,
@@ -54,7 +53,6 @@ export function setupTranslateFactory(service: TranslateService): Function {
       deps: [TranslateService],
       multi: true
     }
-
   ],
   bootstrap: [AppComponent]
 })
@@ -73,22 +71,23 @@ In the main application template, use the following snippet:
 
 ### Translate Pipe
 
-- `<element>{{ 'KEY' | translate }}</element>`
-- `<element [attribute]="property | translate"></element>`
-- `<element attribute="{{ property | translate }}"></element>`
-- `<element [innerHTML]="'KEY' | translate"></element>`
-- `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
-- `<element>{{ 'FORMAT' | translate:params }}</element>`
+* `<element>{{ 'KEY' | translate }}</element>`
+* `<element [attribute]="property | translate"></element>`
+* `<element attribute="{{ property | translate }}"></element>`
+* `<element [innerHTML]="'KEY' | translate"></element>`
+* `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
+* `<element>{{ 'FORMAT' | translate:params }}</element>`
 
 ### Translate Service
 
-- Translation from code
-- Defining translation data from code
-- Merging multiple translations
-- Automatic fallback for missing translations
-- Defining supported languages
-- Configurable cache busting
-- Lazy loading support
+* Automatically load translations on language change
+* Translation from code
+* Defining translation data from code
+* Merging multiple translations
+* Automatic fallback for missing translations
+* Defining supported languages
+* Configurable cache busting
+* Lazy loading support
 
 #### Using from code
 

@@ -39,7 +39,13 @@ export class TranslateService {
   }
 
   set activeLang(value: string) {
-    this._activeLang = value || this.fallbackLang;
+    const newValue = value || this.fallbackLang;
+    const changed = newValue !== this._activeLang;
+
+    if (changed) {
+      this._activeLang = newValue;
+      this.use(newValue);
+    }
   }
 
   constructor(private http: HttpClient) {}

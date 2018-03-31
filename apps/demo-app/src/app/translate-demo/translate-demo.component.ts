@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { TranslateService } from '@ngstack/translate';
 
 @Component({
   selector: 'app-translate-demo',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./translate-demo.component.css']
 })
 export class TranslateDemoComponent implements OnInit {
-  constructor() {}
+  constructor(private translate: TranslateService) {}
 
   ngOnInit() {}
+
+  changeLang(lang: string) {
+    this.translate.activeLang = lang;
+  }
 }
