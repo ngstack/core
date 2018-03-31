@@ -8,9 +8,9 @@ export interface TranslateParams {
 @Injectable()
 export class TranslateService {
   private data: { [key: string]: any } = {};
-
   private _fallbackLang = 'en';
   private _activeLang = 'en';
+  private _translationRoot = 'assets/i18n';
 
   /**
    * Disable caching and always download language files.
@@ -52,6 +52,18 @@ export class TranslateService {
     }
   }
 
+  /**
+   * The root path to use when loading default translation files.
+   * Defaults to 'assets/i18n'.
+   */
+  get translationRoot(): string {
+    return this._translationRoot;
+  }
+
+  set translationRoot(value: string) {
+    this._translationRoot = value || 'assets/i18n';
+  }
+
   constructor(private http: HttpClient) {}
 
   get(key: string, params?: TranslateParams, lang?: string): string {
@@ -80,8 +92,10 @@ export class TranslateService {
       return Promise.resolve(translation);
     }
 
-    const langPath = `assets/i18n/${lang || this._fallbackLang}.json`;
-    return this.load(lang, langPath);
+    const fileName = `${lang || this.fallbackLang}.json`;
+    const filePath = `${this.translationRoot}/${fileName}`;
+
+    return this.load(lang, filePath);
   }
 
   private load(lang: string, path: string): Promise<any> {

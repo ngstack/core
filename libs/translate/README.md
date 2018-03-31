@@ -168,7 +168,22 @@ Should produce the following result at runtime:
 Hello, world!
 ```
 
+You can use multiple values in the format string.
+Note, however, that only the top-level properties of the parameter object are processed.
+
 ## Advanced topics
+
+### Custom translation path
+
+By default TranslateService loads files stored at `assets/i18n` folder.
+You can change the `TranslateService.translationRoot` property to point to a custom location if needed.
+
+```ts
+export function setupTranslateFactory(service: TranslateService): Function {
+  service.translationRoot = '/some/path';
+  return () => service.use('en');
+}
+```
 
 ### Cache busting
 

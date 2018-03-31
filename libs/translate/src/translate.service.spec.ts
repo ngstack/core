@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-describe('TranslateService', () => {
+fdescribe('TranslateService', () => {
   let translate: TranslateService;
   let http: HttpClient;
 
@@ -501,5 +501,33 @@ describe('TranslateService', () => {
 
     translate.activeLang = 'en';
     expect(translate.use).not.toHaveBeenCalled();
+  });
+
+  it('should use default translation root if setting to null', () => {
+    expect(translate.translationRoot).toBe('assets/i18n');
+
+    translate.translationRoot = '';
+    expect(translate.translationRoot).toBe('assets/i18n');
+
+    translate.translationRoot = null;
+    expect(translate.translationRoot).toBe('assets/i18n');
+
+    translate.translationRoot = undefined;
+    expect(translate.translationRoot).toBe('assets/i18n');
+  });
+
+  it('should change translation root value', () => {
+    expect(translate.translationRoot).toBe('assets/i18n');
+    translate.translationRoot = '/assets/my/translations';
+    expect(translate.translationRoot).toBe('/assets/my/translations');
+  });
+
+  it('should use custom translation root to load files', async () => {
+    spyOn(http, 'get').and.returnValue(Observable.of({}));
+
+    translate.translationRoot = '/some/path';
+    await translate.use('en');
+
+    expect(http.get).toHaveBeenCalledWith('/some/path/en.json');
   });
 });
