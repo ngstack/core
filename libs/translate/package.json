@@ -20,6 +20,7 @@
   },
   "ngPackage": {
     "lib": {
+      "languageLevel": ["dom", "es2017"],
       "entryFile": "index.ts"
     },
     "dest": "dist/@ngstack/translate"
