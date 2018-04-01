@@ -55,10 +55,9 @@ export class CodeEditorComponent
     return this._value;
   }
 
+  @Input() theme = 'vs';
   @Input() language = 'javascript';
-
   @Input() options = {};
-
   @Input() readOnly = false;
 
   @Output() valueChanged = new EventEmitter();
@@ -123,7 +122,8 @@ export class CodeEditorComponent
     const options = Object.assign({}, this.defaultOptions, this.options, {
       value: this.value,
       language: this.language,
-      readOnly: this.readOnly
+      readOnly: this.readOnly,
+      theme: this.theme
     });
     this._editor = monaco.editor.create(myDiv, options);
 
