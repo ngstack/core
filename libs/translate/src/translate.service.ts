@@ -80,6 +80,15 @@ export class TranslateService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * Get translated string
+   *
+   * @param {string} key Translation key
+   * @param {TranslateParams} [params] Translation parameters
+   * @param {string} [lang] Language to use for translation
+   * @returns {string} Translated string
+   * @memberof TranslateService
+   */
   get(key: string, params?: TranslateParams, lang?: string): string {
     if (key) {
       let value = this.getValue(lang || this.activeLang, key);
@@ -91,7 +100,14 @@ export class TranslateService {
       return null;
     }
   }
-
+  /**
+   * Load the translation file or use provided data for the given language.
+   *
+   * @param {string} lang Language name
+   * @param {*} [data] Translation data to use
+   * @returns {Promise<any>} Final translation data merged with existing translations
+   * @memberof TranslateService
+   */
   async use(lang: string, data?: any): Promise<any> {
     if (lang && data) {
       return this.setTranslation(lang, data);
