@@ -73,10 +73,10 @@ export class AppComponent {
 
 | Name     | Type    | Default Value | Description                                                  |
 | -------- | ------- | ------------- | ------------------------------------------------------------ |
-| theme    | string  | `vs`          | Editor theme. Allowed values: `vs`, `vs-dark` or `hc-black`. |
-| language | string  | `javascript`  | Editor language.                                             |
-| options  | Object  | `{...}`       | Editor options.                                              |
-| readOnly | boolean | `false`       | Toggles readonly state of the editor.                        |
+| theme    | string  | vs            | Editor theme. Allowed values: `vs`, `vs-dark` or `hc-black`. |
+| language | string  | javascript    | Editor language.                                             |
+| options  | Object  | {...}         | Editor options.                                              |
+| readOnly | boolean | false         | Toggles readonly state of the editor.                        |
 | value    | string  |               | Editor text value.                                           |
 
 ### Editor Options
@@ -87,10 +87,10 @@ The following options are used by default when Editor Component gets created:
 
 ```json
 {
-  lineNumbers: true,
-  contextmenu: false,
-  minimap: {
-    enabled: false
+  "lineNumbers": true,
+  "contextmenu": false,
+  "minimap": {
+    "enabled": false
   }
 }
 ```
