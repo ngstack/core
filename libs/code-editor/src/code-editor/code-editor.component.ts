@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   ViewEncapsulation,
   OnChanges,
@@ -15,7 +14,6 @@ import {
 } from '@angular/core';
 
 declare const monaco: any;
-// declare const require: any;
 
 @Component({
   selector: 'ngs-code-editor',
@@ -27,11 +25,10 @@ declare const monaco: any;
   host: { class: 'ngs-code-editor' }
 })
 export class CodeEditorComponent
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+  implements OnChanges, OnDestroy, AfterViewInit {
   private _editor: any;
   private _value = '';
 
-  // https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
   private defaultOptions = {
     lineNumbers: true,
     contextmenu: false,
@@ -55,16 +52,38 @@ export class CodeEditorComponent
     return this._value;
   }
 
+  /**
+   * Editor theme. Defaults to `vs`.
+   *
+   * Allowed values: `vs`, `vs-dark` or `hc-black`.
+   * @memberof CodeEditorComponent
+   */
   @Input() theme = 'vs';
+
+  /**
+   * Editor language. Defaults to `javascript`.
+   *
+   * @memberof CodeEditorComponent
+   */
   @Input() language = 'javascript';
+
+  /**
+   * Editor options.
+   *
+   * See https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html for more details.
+   *
+   * @memberof CodeEditorComponent
+   */
   @Input() options = {};
+
+  /**
+   * Toggle readonly state of the editor.
+   *
+   * @memberof CodeEditorComponent
+   */
   @Input() readOnly = false;
 
-  @Output() valueChanged = new EventEmitter();
-
-  constructor() {}
-
-  ngOnInit() {}
+  @Output() valueChanged = new EventEmitter<string>();
 
   ngOnDestroy() {
     if (this._editor) {
@@ -74,11 +93,11 @@ export class CodeEditorComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes && changes.value && !changes.value.firstChange) {
+    if (changes.value && !changes.value.firstChange) {
       this.setEditorValue(changes.value.currentValue);
     }
 
-    if (changes && changes.language && !changes.language.firstChange) {
+    if (changes.language && !changes.language.firstChange) {
       if (this._editor) {
         monaco.editor.setModelLanguage(
           this._editor.getModel(),
@@ -87,12 +106,16 @@ export class CodeEditorComponent
       }
     }
 
-    if (changes && changes.readOnly && !changes.readOnly.firstChange) {
+    if (changes.readOnly && !changes.readOnly.firstChange) {
       if (this._editor) {
         this._editor.updateOptions({
           readOnly: changes.readOnly.currentValue
         });
       }
+    }
+
+    if (changes.theme && !changes.theme.firstChange) {
+      monaco.editor.setTheme(changes.theme.currentValue);
     }
   }
 
@@ -117,7 +140,7 @@ export class CodeEditorComponent
     }
   }
 
-  initMonaco() {
+  private initMonaco() {
     const myDiv: HTMLDivElement = this.editorContent.nativeElement;
     const options = Object.assign({}, this.defaultOptions, this.options, {
       value: this.value,
@@ -136,7 +159,7 @@ export class CodeEditorComponent
     });
   }
 
-  setEditorValue(value: any): void {
+  private setEditorValue(value: any): void {
     // Fix for value change while dispose in process.
     setTimeout(() => {
       if (this._editor) {

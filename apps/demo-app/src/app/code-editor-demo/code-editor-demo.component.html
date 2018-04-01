@@ -1,9 +1,12 @@
 <h3>Code Editor</h3>
 
-<ngs-code-editor
-  [(value)]="code"
-  [language]="lang"
-  [options]="options"
-  [readOnly]="readOnly"
-  (valueChanged)="onCodeChanged($event)">
+<mat-form-field>
+  <mat-select placeholder="Theme" [(value)]="activeTheme">
+    <mat-option *ngFor="let theme of themes" [value]="theme.value">
+      {{ theme.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<ngs-code-editor [theme]="activeTheme" [(value)]="code" [language]="lang" [options]="options" (valueChanged)="onCodeChanged($event)">
 </ngs-code-editor>

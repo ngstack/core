@@ -42,10 +42,10 @@ Update template to use the `ngs-code-editor`:
 
 ```html
 <ngs-code-editor
+  theme="vs-dark"
+  language="javascript"
   [(value)]="code"
-  [language]="lang"
   [options]="options"
-  [readOnly]="readOnly"
   (valueChanged)="onCodeChanged($event)">
 </ngs-code-editor>
 ```
@@ -53,16 +53,8 @@ Update template to use the `ngs-code-editor`:
 Update component controller class and provide corresponding properties and events:
 
 ```ts
-export class AppComponent implements OnInit {
-
-  @Input()
-  lang = 'javascript';
-
-  @Input()
-  code = 'var x = 1;';
-
-  @Input()
-  readOnly = false;
+export class AppComponent {
+  @Input() code = 'var x = 1;';
 
   options = {
     contextmenu: true,
@@ -74,9 +66,37 @@ export class AppComponent implements OnInit {
   onCodeChanged(value) {
     console.log('CODE', this.code);
   }
-
-  constructor() {}
-
-  ngOnInit() {}
 }
 ```
+
+## Input Properties
+
+| Name     | Type    | Default Value | Description                                                  |
+| -------- | ------- | ------------- | ------------------------------------------------------------ |
+| theme    | string  | `vs`          | Editor theme. Allowed values: `vs`, `vs-dark` or `hc-black`. |
+| language | string  | `javascript`  | Editor language.                                             |
+| options  | Object  | `{...}`       | Editor options.                                              |
+| readOnly | boolean | `false`       | Toggles readonly state of the editor.                        |
+| value    | string  |               | Editor text value.                                           |
+
+### Editor Options
+
+For available options see [IEditorConstructionOptions](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) docs.
+
+The following options are used by default when Editor Component gets created:
+
+```json
+{
+  lineNumbers: true,
+  contextmenu: false,
+  minimap: {
+    enabled: false
+  }
+}
+```
+
+## Output Events
+
+| Name         | Argument Type | Description                             |
+| ------------ | ------------- | --------------------------------------- |
+| valueChanged | string        | Raised after editor value gets changed. |

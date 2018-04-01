@@ -1,4 +1,10 @@
 {
-  "cSpell.words": ["minimap", "ngstack", "nrwl", "stackblitz"],
+  "cSpell.words": [
+    "contextmenu",
+    "minimap",
+    "ngstack",
+    "nrwl",
+    "stackblitz"
+  ],
   "editor.formatOnSave": true
 }

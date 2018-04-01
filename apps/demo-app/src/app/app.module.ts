@@ -6,6 +6,7 @@ import { NxModule } from '@nrwl/nx';
 import { TranslateModule, TranslateService } from '@ngstack/translate';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { AppComponent } from './app.component';
 import { TranslateDemoComponent } from './translate-demo/translate-demo.component';
 import { CodeEditorDemoComponent } from './code-editor-demo/code-editor-demo.component';
@@ -40,7 +41,8 @@ const routes: Route[] = [
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     TranslateModule.forRoot(),
     CodeEditorModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule
   ],
   declarations: [
     AppComponent,
