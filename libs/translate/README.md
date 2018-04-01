@@ -24,7 +24,7 @@ Create `en.json` file in the `src/app/assets/i18n` folder of your application.
 ```
 
 Import `TranslateModule` into you main application module,
-configure `TranslateService` to start automatically during application startup.
+configure `TranslateService` to start during application startup.
 
 You will also need `HttpClientModule` module dependency.
 
@@ -80,7 +80,7 @@ In the main application template, use the following snippet:
 
 ### Translate Service
 
-* Automatically load translations on language change
+* Load translations on language change
 * Translation from code
 * Defining translation data from code
 * Merging multiple translations
@@ -170,7 +170,7 @@ Hello, world!
 ```
 
 You can use multiple values in the format string.
-Note, however, that only the top-level properties of the parameter object are processed.
+Note, however, that TranslateService checks only the top-level properties of the parameter object.
 
 ## Advanced topics
 
@@ -197,7 +197,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
 }
 ```
 
-The files are fetched and merged together in the order of declarations,
+The files are getting fetched and merged in the order of declarations,
 and applied on the top of the default data loaded from `TranslateService.translationRoot` path.
 
 ### Cache busting
@@ -223,16 +223,15 @@ export function setupTranslateFactory(service: TranslateService): Function {
 }
 ```
 
-The service will attempt to load resource files only for given set of languages,
-and will automatically use fallback language for all unspecified values.
+The service will try to load resource files only for given set of languages,
+and will use fallback language for all unspecified values.
 
-By default this property is empty and service is going to probe all language files.
-Active and Fallback languages are always taken into account, even if you do not specify them in the list.
+By default this property is empty and service will probe all language files.
+The service always takes into account the Active and Fallback languages, even if you do not specify them in the list.
 
 ### Using with your own pipes
 
-You are not restricted to using only `TranslatePipe`.
-It is possible to use `TranslateService` with your own implementations as well.
+It is possible to use `TranslateService` with your own implementations.
 
 You can see the basic pipe implementation below:
 
