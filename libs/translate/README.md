@@ -237,7 +237,7 @@ You can see the basic pipe implementation below:
 
 ```ts
 import { Pipe, PipeTransform } from '@angular/core';
-import { TranslateService } from '@ngstack/translate';
+import { TranslateService, TranslateParams } from '@ngstack/translate';
 
 @Pipe({
   name: 'myTranslate',
@@ -246,7 +246,7 @@ import { TranslateService } from '@ngstack/translate';
 export class CustomTranslatePipe implements PipeTransform {
   constructor(private translate: TranslateService) {}
 
-  transform(key: string, params?: { [key: string]: string }): string {
+  transform(key: string, params?: TranslateParams): string {
     return this.translate.get(key, params);
   }
 }
