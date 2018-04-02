@@ -4,6 +4,10 @@ Code editor component for Angular applications.
 Based on the [Monaco](https://www.npmjs.com/package/monaco-editor) editor
 that powers [VS Code](https://github.com/Microsoft/vscode).
 
+## Live demos
+
+* [Angular example (Stackblitz)](https://stackblitz.com/edit/ngstack-code-editor?file=app%2Fapp.component.html)
+
 ## Installing
 
 ```sh
