@@ -13,6 +13,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 
+import { CodeEditorService } from './../code-editor.service';
+
 declare const monaco: any;
 
 @Component({
@@ -85,6 +87,8 @@ export class CodeEditorComponent
 
   @Output() valueChanged = new EventEmitter<string>();
 
+  constructor(private editorService: CodeEditorService) {}
+
   ngOnDestroy() {
     if (this._editor) {
       this._editor.dispose();
@@ -119,36 +123,20 @@ export class CodeEditorComponent
     }
   }
 
-  ngAfterViewInit() {
-    const onGotAmdLoader = () => {
-      // Load monaco
-      (<any>window).require.config({ paths: { vs: 'assets/monaco/vs' } });
-      (<any>window).require(['vs/editor/editor.main'], () => {
-        this.initMonaco();
-      });
-    };
-
-    // Load AMD loader if necessary
-    if (!(<any>window).require) {
-      const loaderScript = document.createElement('script');
-      loaderScript.type = 'text/javascript';
-      loaderScript.src = 'assets/monaco/vs/loader.js';
-      loaderScript.addEventListener('load', onGotAmdLoader);
-      document.body.appendChild(loaderScript);
-    } else {
-      onGotAmdLoader();
-    }
+  async ngAfterViewInit() {
+    await this.editorService.loadEditor();
+    this.initMonaco();
   }
 
   private initMonaco() {
-    const myDiv: HTMLDivElement = this.editorContent.nativeElement;
+    const domElement: HTMLDivElement = this.editorContent.nativeElement;
     const options = Object.assign({}, this.defaultOptions, this.options, {
       value: this.value,
       language: this.language,
       readOnly: this.readOnly,
       theme: this.theme
     });
-    this._editor = monaco.editor.create(myDiv, options);
+    this._editor = monaco.editor.create(domElement, options);
 
     this._editor.getModel().onDidChangeContent(e => {
       const newValue = this._editor.getModel().getValue();

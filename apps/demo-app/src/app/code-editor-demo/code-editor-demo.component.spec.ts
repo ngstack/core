@@ -12,7 +12,11 @@ describe('CodeEditorDemoComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [BrowserAnimationsModule, CodeEditorModule, MatSelectModule],
+        imports: [
+          BrowserAnimationsModule,
+          CodeEditorModule.forRoot(),
+          MatSelectModule
+        ],
         declarations: [CodeEditorDemoComponent]
       }).compileComponents();
     })

@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NxModule } from '@nrwl/nx';
 import { TranslateModule, TranslateService } from '@ngstack/translate';
-import { CodeEditorModule } from '@ngstack/code-editor';
+import { CodeEditorModule, CodeEditorService } from '@ngstack/code-editor';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { AppComponent } from './app.component';
@@ -13,8 +13,14 @@ import { CodeEditorDemoComponent } from './code-editor-demo/code-editor-demo.com
 import { CustomTranslatePipe } from './translate-demo/custom-translate.pipe';
 
 export function setupTranslateFactory(service: TranslateService): Function {
-  // service.disableCache = true;
   return () => service.use('en');
+}
+
+export function setupCodeEditorFactory(service: CodeEditorService): Function {
+  return () => {
+    // Uncomment to use local Monaco installation
+    // service.baseUrl = 'assets/monaco';
+  };
 }
 
 const routes: Route[] = [
@@ -40,7 +46,7 @@ const routes: Route[] = [
     NxModule.forRoot(),
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     TranslateModule.forRoot(),
-    CodeEditorModule,
+    CodeEditorModule.forRoot(),
     MatButtonModule,
     MatSelectModule
   ],
@@ -51,11 +57,16 @@ const routes: Route[] = [
     CustomTranslatePipe
   ],
   providers: [
-    TranslateService,
     {
       provide: APP_INITIALIZER,
       useFactory: setupTranslateFactory,
       deps: [TranslateService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: setupCodeEditorFactory,
+      deps: [CodeEditorService],
       multi: true
     }
   ],

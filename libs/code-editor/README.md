@@ -7,21 +7,10 @@ that powers [VS Code](https://github.com/Microsoft/vscode).
 ## Installing
 
 ```sh
-npm install monaco-editor
 npm install @ngstack/code-editor
 ```
 
 ## Integrating with Angular CLI project
-
-Update the `.angular-cli.json` file and append the following asset rule:
-
-```json
-{
-  "glob": "**/*",
-  "input": "../node_modules/monaco-editor/min",
-  "output": "./assets/monaco"
-}
-```
 
 Import `CodeEditorModule` into your main application module:
 
@@ -31,7 +20,7 @@ import { CodeEditorModule } from '@ngstack/code-editor';
 @NgModule({
   imports: [
     ...,
-    CodeEditorModule
+    CodeEditorModule.forRoot()
   ],
   ...
 })
@@ -100,3 +89,62 @@ The following options are used by default when Editor Component gets created:
 | Name         | Argument Type | Description                             |
 | ------------ | ------------- | --------------------------------------- |
 | valueChanged | string        | Raised after editor value gets changed. |
+
+## Offline Setup
+
+You can run the editor in the offline mode with your Angular CLI application using the following steps:
+
+Install the `monaco-editor`:
+
+```sh
+npm install monaco-editor
+```
+
+Update the `.angular-cli.json` file and append the following asset rule:
+
+```json
+{
+  "glob": "**/*",
+  "input": "../node_modules/monaco-editor/min",
+  "output": "./assets/monaco"
+}
+```
+
+Update the main application module and setup the service to use the custom `baseUrl` when application starts:
+
+```ts
+import { CodeEditorModule, CodeEditorService } from '@ngstack/code-editor';
+
+export function setupCodeEditorFactory(service: CodeEditorService): Function {
+  return () => {
+    service.baseUrl = 'assets/monaco';
+  };
+}
+
+@NgModule({
+  ...,
+  imports: [
+    ...,
+    CodeEditorModule.forRoot()
+  ],
+  providers: [
+    ...,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: setupCodeEditorFactory,
+      deps: [CodeEditorService],
+      multi: true
+    }
+  ],
+  ...
+})
+export class AppModule {}
+```
+
+## Lazy Loading
+
+To enable Lazy Loading
+use `CodeEditorModule.forRoot()` in the main application,
+and `CodeEditorModule.forChild()` in all lazy-loaded feature modules.
+
+For more details please refer to [Lazy Loading Feature Modules](https://angular.io/guide/lazy-loading-ngmodules)
