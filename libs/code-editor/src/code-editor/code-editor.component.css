@@ -1,7 +1,5 @@
-#editor {
-  width:100%;
-  height:inherit;
-  border:1px solid grey;
-
+.editor {
+  width: 100%;
+  height: inherit;
   min-height: 200px;
 }

@@ -157,6 +157,45 @@ export class CodeEditorComponent
         this.valueChanged.emit(newValue);
       }
     });
+
+    this.setupTypescriptDefaults();
+  }
+
+  private setupTypescriptDefaults() {
+    const typescriptDefaults = monaco.languages.typescript.typescriptDefaults;
+
+    typescriptDefaults.setCompilerOptions({
+      target: monaco.languages.typescript.ScriptTarget.ES6,
+      module: 'commonjs',
+      noEmit: true,
+      noLib: true,
+      emitDecoratorMetadata: true,
+      experimentalDecorators: true,
+      allowNonTsExtensions: true,
+      declaration: true
+      // rootDirs: ['/bin/node_modules']
+    });
+
+    /*
+    typescriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: true
+    });
+    */
+
+    // const dog = `
+    //   declare module 'dog' {
+    //       export class Dog {
+    //           /** Barks as a dog */
+    //           public bark(): string;
+    //       }
+    //   }`;
+    // typescriptDefaults.addExtraLib(dog, 'dog.d.ts');
+
+    // typescriptDefaults.addExtraLib(
+    //   'declare var externalLibVar: any;',
+    //   'testlib.d.ts'
+    // );
   }
 
   private setEditorValue(value: any): void {

@@ -8,5 +8,8 @@
   </mat-select>
 </mat-form-field>
 
-<ngs-code-editor [theme]="activeTheme" [(value)]="code" [language]="lang" [options]="options" (valueChanged)="onCodeChanged($event)">
+<input type="file" #file style="display: none" accept=".ts, .js" (change)="onFileSelected($event)">
+<button mat-raised-button (click)="onLoadClicked()">Load</button>
+
+<ngs-code-editor [theme]="activeTheme" [(value)]="code" language="typescript" [options]="options" (valueChanged)="onCodeChanged($event)">
 </ngs-code-editor>
