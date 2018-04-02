@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "@ngstack/code-editor",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "author": {
     "name": "Denys Vuika",
