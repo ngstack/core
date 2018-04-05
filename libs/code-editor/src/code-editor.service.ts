@@ -1,9 +1,39 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+
+export interface TypingInfo {
+  content: string;
+  name: string;
+  url: string;
+  path: string;
+}
 
 @Injectable()
 export class CodeEditorService {
   // baseUrl = 'assets/monaco';
   baseUrl = 'https://unpkg.com/monaco-editor@0.11.1/min';
+  workerUrl = 'assets/workers/typings-worker.js';
+
+  typingsLoaded = new Subject<TypingInfo[]>();
+
+  private worker: Worker;
+
+  constructor() {
+    if ((<any>window).Worker) {
+      this.worker = new Worker(this.workerUrl);
+      this.worker.addEventListener('message', e => {
+        this.typingsLoaded.next(e.data);
+      });
+    }
+  }
+
+  loadTypings(dependencies: string[]) {
+    if (dependencies && dependencies.length > 0) {
+      this.worker.postMessage({
+        dependencies
+      });
+    }
+  }
 
   loadEditor(): Promise<any> {
     return new Promise((resolve, reject) => {

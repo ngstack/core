@@ -19,8 +19,21 @@ export class CodeEditorDemoComponent {
     { name: 'High Contrast Dark', value: 'hc-black' }
   ];
 
+  dependencies: string[] = ['@ngstack/translate', '@ngstack/code-editor'];
+
   @Input() activeTheme = 'vs';
-  @Input() code = 'var x = 1;';
+  @Input()
+  code = [
+    `import { TranslateModule, TranslateService } from '@ngstack/translate';`,
+    `import { CodeEditorModule } from '@ngstack/code-editor';`,
+    '',
+    `export class MyClass {`,
+    `  constructor(translate: TranslateService) {`,
+    '',
+    '  }',
+    `}`
+  ].join('\n');
+
   @Input() readOnly = false;
 
   @ViewChild('file') fileInput: ElementRef;

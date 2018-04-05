@@ -29,6 +29,7 @@ declare const monaco: any;
 export class CodeEditorComponent
   implements OnChanges, OnDestroy, AfterViewInit {
   private _editor: any;
+  private model: any;
   private _value = '';
 
   private defaultOptions = {
@@ -63,11 +64,11 @@ export class CodeEditorComponent
   @Input() theme = 'vs';
 
   /**
-   * Editor language. Defaults to `javascript`.
+   * Editor language. Defaults to `typescript`.
    *
    * @memberof CodeEditorComponent
    */
-  @Input() language = 'javascript';
+  @Input() language = 'typescript';
 
   /**
    * Editor options.
@@ -85,14 +86,37 @@ export class CodeEditorComponent
    */
   @Input() readOnly = false;
 
+  @Input() dependencies: string[] = [];
+
   @Output() valueChanged = new EventEmitter<string>();
 
-  constructor(private editorService: CodeEditorService) {}
+  constructor(private editorService: CodeEditorService) {
+    editorService.typingsLoaded.subscribe(typings => {
+      if (this.language && this.language.toLowerCase() === 'typescript') {
+        // undocumented API
+        const libs = monaco.languages.typescript.typescriptDefaults.getExtraLibs();
+
+        typings.forEach(t => {
+          if (!libs[t.path]) {
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(
+              t.content,
+              t.path
+            );
+          }
+        });
+      }
+    });
+  }
 
   ngOnDestroy() {
     if (this._editor) {
       this._editor.dispose();
       this._editor = null;
+    }
+
+    if (this.model) {
+      this.model.dispose();
+      this.model = null;
     }
   }
 
@@ -104,7 +128,7 @@ export class CodeEditorComponent
     if (changes.language && !changes.language.firstChange) {
       if (this._editor) {
         monaco.editor.setModelLanguage(
-          this._editor.getModel(),
+          this.model,
           changes.language.currentValue
         );
       }
@@ -130,26 +154,36 @@ export class CodeEditorComponent
 
   private initMonaco() {
     const domElement: HTMLDivElement = this.editorContent.nativeElement;
+
+    let uri = null;
+    if (this.language && this.language.toLowerCase() === 'typescript') {
+      uri = new monaco.Uri('main.ts');
+    }
+
+    this.model = monaco.editor.createModel(this.value, this.language, uri);
+
     const options = Object.assign({}, this.defaultOptions, this.options, {
-      value: this.value,
-      language: this.language,
       readOnly: this.readOnly,
-      theme: this.theme
+      theme: this.theme,
+      model: this.model
     });
+
     this._editor = monaco.editor.create(domElement, options);
 
-    this._editor.getModel().onDidChangeContent(e => {
-      const newValue = this._editor.getModel().getValue();
+    this.model.onDidChangeContent(e => {
+      const newValue = this.model.getValue();
       if (this._value !== newValue) {
         this._value = newValue;
         this.valueChanged.emit(newValue);
       }
     });
 
-    this.setupTypescriptDefaults();
+    if (this.language && this.language.toLowerCase() === 'typescript') {
+      this.setupTypescriptDefaults();
+    }
   }
 
-  private setupTypescriptDefaults() {
+  private async setupTypescriptDefaults() {
     const typescriptDefaults = monaco.languages.typescript.typescriptDefaults;
 
     typescriptDefaults.setCompilerOptions({
@@ -161,8 +195,10 @@ export class CodeEditorComponent
       experimentalDecorators: true,
       allowNonTsExtensions: true,
       declaration: true
-      // rootDirs: ['/bin/node_modules']
     });
+
+    typescriptDefaults.setMaximunWorkerIdleTime(-1);
+    typescriptDefaults.setEagerModelSync(true);
 
     /*
     typescriptDefaults.setDiagnosticsOptions({
@@ -171,26 +207,16 @@ export class CodeEditorComponent
     });
     */
 
-    // const dog = `
-    //   declare module 'dog' {
-    //       export class Dog {
-    //           /** Barks as a dog */
-    //           public bark(): string;
-    //       }
-    //   }`;
-    // typescriptDefaults.addExtraLib(dog, 'dog.d.ts');
-
-    // typescriptDefaults.addExtraLib(
-    //   'declare var externalLibVar: any;',
-    //   'testlib.d.ts'
-    // );
+    if (this.dependencies && this.dependencies.length > 0) {
+      this.editorService.loadTypings(this.dependencies);
+    }
   }
 
   private setEditorValue(value: any): void {
     // Fix for value change while dispose in process.
     setTimeout(() => {
-      if (this._editor) {
-        this._editor.getModel().setValue(this.value);
+      if (this.model) {
+        this.model.setValue(this.value);
       }
     });
   }
