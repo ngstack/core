@@ -98,6 +98,7 @@ export class CodeEditorComponent
 
         typings.forEach(t => {
           if (!libs[t.path]) {
+            // TODO: needs performance improvements, recreates its worker each time
             monaco.languages.typescript.typescriptDefaults.addExtraLib(
               t.content,
               t.path
