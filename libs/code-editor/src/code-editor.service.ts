@@ -22,7 +22,15 @@ export class CodeEditorService {
 
   private loadTypingsWorker(): Worker {
     if (!this.typingsWorker && (<any>window).Worker) {
-      this.typingsWorker = new Worker(this.typingsWorkerUrl);
+      if (this.typingsWorkerUrl.startsWith('http')) {
+        const proxyScript = `importScripts('${this.typingsWorkerUrl}');`;
+        const proxy = URL.createObjectURL(
+          new Blob([proxyScript], { type: 'text/javascript' })
+        );
+        this.typingsWorker = new Worker(proxy);
+      } else {
+        this.typingsWorker = new Worker(this.typingsWorkerUrl);
+      }
       this.typingsWorker.addEventListener('message', e => {
         this.typingsLoaded.next(e.data);
       });
@@ -53,7 +61,7 @@ export class CodeEditorService {
             self.MonacoEnvironment = {
               baseUrl: "${this.baseUrl}"
             };
-            importScripts("${this.baseUrl}/vs/base/worker/workerMain.js");
+            importScripts('${this.baseUrl}/vs/base/worker/workerMain.js');
           `;
           const proxy = URL.createObjectURL(
             new Blob([proxyScript], { type: 'text/javascript' })
