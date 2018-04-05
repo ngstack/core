@@ -1,3 +1,5 @@
+// This worker resolves typings (.d.ts files) for the given list of dependencies.
+
 self.importScripts([
   'https://cdnjs.cloudflare.com/ajax/libs/typescript/2.7.2/typescript.min.js'
 ]);

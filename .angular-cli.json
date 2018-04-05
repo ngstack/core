@@ -41,6 +41,11 @@
           "glob": "**/*",
           "input": "../../../node_modules/monaco-editor/min",
           "output": "./assets/monaco"
+        },
+        {
+          "glob": "**/*.js",
+          "input": "../../../libs/code-editor/src/workers",
+          "output": "./assets/workers"
         }
       ],
       "index": "index.html",
@@ -50,9 +55,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "../../../tsconfig.spec.json",
       "prefix": "app",
-      "styles": [
-        "styles.css"
-      ],
+      "styles": ["styles.css"],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
