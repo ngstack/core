@@ -19,7 +19,9 @@ export function setupTranslateFactory(service: TranslateService): Function {
 export function setupCodeEditorFactory(service: CodeEditorService): Function {
   return () => {
     // Uncomment to use local Monaco installation
-    // service.baseUrl = 'assets/monaco';
+    service.baseUrl = 'assets/monaco';
+    // Uncomment to use local Typings Worker
+    service.typingsWorkerUrl = 'assets/workers/typings-worker.js';
   };
 }
 

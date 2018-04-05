@@ -12,26 +12,32 @@ export interface TypingInfo {
 export class CodeEditorService {
   // baseUrl = 'assets/monaco';
   baseUrl = 'https://unpkg.com/monaco-editor@0.11.1/min';
-  workerUrl = 'assets/workers/typings-worker.js';
+
+  // typingsWorkerUrl = 'assets/workers/typings-worker.js';
+  typingsWorkerUrl = 'https://unpkg.com/@ngstack/code-editor/workers/typings-worker.js';
 
   typingsLoaded = new Subject<TypingInfo[]>();
 
-  private worker: Worker;
+  private typingsWorker: Worker;
 
-  constructor() {
-    if ((<any>window).Worker) {
-      this.worker = new Worker(this.workerUrl);
-      this.worker.addEventListener('message', e => {
+  private loadTypingsWorker(): Worker {
+    if (!this.typingsWorker && (<any>window).Worker) {
+      this.typingsWorker = new Worker(this.typingsWorkerUrl);
+      this.typingsWorker.addEventListener('message', e => {
         this.typingsLoaded.next(e.data);
       });
     }
+    return this.typingsWorker;
   }
 
   loadTypings(dependencies: string[]) {
     if (dependencies && dependencies.length > 0) {
-      this.worker.postMessage({
-        dependencies
-      });
+      const worker = this.loadTypingsWorker();
+      if (worker) {
+        worker.postMessage({
+          dependencies
+        });
+      }
     }
   }
 
