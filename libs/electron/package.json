@@ -1,0 +1,28 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "@ngstack/electron",
+  "description": "Angular library that provides integration with Electron",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Denys Vuika",
+    "email": "denys.vuika@gmail.com",
+    "url": "https://medium.com/@DenysVuika"
+  },
+  "keywords": ["angular", "electron"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngstack/core.git"
+  },
+  "homepage": "https://github.com/ngstack/core/tree/master/libs/electron",
+  "bugs": {
+    "url": "https://github.com/ngstack/core/issues"
+  },
+  "ngPackage": {
+    "lib": {
+      "languageLevel": ["dom", "es2017"],
+      "entryFile": "index.ts"
+    },
+    "dest": "dist/@ngstack/electron"
+  }
+}
