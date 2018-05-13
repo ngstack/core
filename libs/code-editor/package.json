@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "@ngstack/code-editor",
+  "description": "Code editor component for Angular applications.",
   "version": "0.1.7",
   "license": "MIT",
   "author": {
