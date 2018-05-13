@@ -1,5 +1,7 @@
 # NgStack
 
+[![CircleCI](https://circleci.com/gh/ngstack/core.svg?style=svg)](https://circleci.com/gh/ngstack/core)
+
 ## Components
 
 * [Translate](https://github.com/ngstack/core/tree/master/libs/translate): translation library
