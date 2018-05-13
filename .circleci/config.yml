@@ -1,16 +1,22 @@
 version: 2
 jobs:
-  test:
-    working_directory: ~/ngstack-core
+  build:
     docker:
       - image: circleci/node:8-browsers
+
+    working_directory: ~/ngstack-core
+
     steps:
       - checkout
+
       - restore_cache:
           key: ngstack-core-{{ .Branch }}-{{ checksum "package.json" }}
+
       - run: npm install
+
       - save_cache:
           key: ngstack-core-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - "node_modules"
+
       - run: xvfb-run -a npm run test:ci
