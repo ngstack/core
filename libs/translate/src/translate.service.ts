@@ -97,10 +97,10 @@ export class TranslateService {
   /**
    * Get translated string
    *
-   * @param {string} key Translation key
-   * @param {TranslateParams} [params] Translation parameters
-   * @param {string} [lang] Language to use for translation
-   * @returns {string} Translated string
+   * @param key Translation key
+   * @param [params] Translation parameters
+   * @param [lang] Language to use for translation
+   * @returns Translated string
    * @memberof TranslateService
    */
   get(key: string, params?: TranslateParams, lang?: string): string {
@@ -117,9 +117,9 @@ export class TranslateService {
   /**
    * Load the translation file or use provided data for the given language.
    *
-   * @param {string} lang Language name
-   * @param {*} [data] Translation data to use
-   * @returns {Promise<any>} Final translation data merged with existing translations
+   * @param lang Language name
+   * @param [data] Translation data to use
+   * @returns Final translation data merged with existing translations
    * @memberof TranslateService
    */
   async use(lang: string, data?: any): Promise<any> {
