@@ -174,6 +174,27 @@ Note, however, that TranslateService checks only the top-level properties of the
 
 ## Advanced topics
 
+### Watching for language change
+
+You can watch for language change event utilising the `activeLangChanged` event:
+
+```ts
+@Component({...})
+export class MyComponent {
+
+  constructor(translate: TranslateService) {
+
+    translate.activeLangChanged.subscribe(
+      (event: { previousValue: string; currentValue: string }) => {
+        console.log(event.previousValue);
+        console.log(event.currentValue);
+      }
+    );
+
+  }
+}
+```
+
 ### Custom translation path
 
 By default TranslateService loads files stored at `assets/i18n` folder.

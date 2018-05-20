@@ -565,4 +565,37 @@ describe('TranslateService', () => {
       `${translate.translationRoot}/en.json`
     );
   });
+
+  it('should raise an event each time language is changed', done => {
+    translate.activeLang = 'en';
+    translate.activeLangChanged.subscribe(done);
+    translate.activeLang = 'fr';
+  });
+
+  it('should raise an event only when language value is changed', () => {
+    translate.activeLang = 'en';
+
+    let count = 0;
+    translate.activeLangChanged.subscribe(() => count++);
+
+    translate.activeLang = 'fr';
+    translate.activeLang = 'it';
+    translate.activeLang = 'it';
+
+    expect(count).toBe(2);
+  });
+
+  it('should provide previous and current value for changed event', done => {
+    translate.activeLang = 'en';
+
+    translate.activeLangChanged.subscribe(
+      (event: { previousValue: string; currentValue: string }) => {
+        expect(event.previousValue).toBe('en');
+        expect(event.currentValue).toBe('it');
+        done();
+      }
+    );
+
+    translate.activeLang = 'it';
+  });
 });

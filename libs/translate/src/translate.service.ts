@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 export interface TranslateParams {
@@ -57,12 +57,18 @@ export class TranslateService {
   }
 
   set activeLang(value: string) {
+    const previousValue = this._activeLang;
     const newValue = value || this.fallbackLang;
-    const changed = newValue !== this._activeLang;
+    const changed = newValue !== previousValue;
 
     if (changed) {
       this._activeLang = newValue;
       this.use(newValue);
+
+      this.activeLangChanged.next({
+        previousValue: previousValue,
+        currentValue: newValue
+      });
     }
   }
 
@@ -77,6 +83,14 @@ export class TranslateService {
   set translationRoot(value: string) {
     this._translationRoot = value || 'assets/i18n';
   }
+
+  /**
+   * Raised each time active language gets changed.
+   */
+  activeLangChanged = new EventEmitter<{
+    previousValue: string;
+    currentValue: string;
+  }>();
 
   constructor(private http: HttpClient) {}
 
