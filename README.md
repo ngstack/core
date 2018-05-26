@@ -4,6 +4,6 @@
 
 ## Components
 
-* [Translate](https://github.com/ngstack/core/tree/master/libs/translate): translation library
-* [Code Editor](https://github.com/ngstack/core/tree/master/libs/code-editor): code editing component based on the editor that powers Visual Studio Code
-* [Electron](https://github.com/ngstack/core/tree/master/libs/electron): set of utilities for Electron integration
+* [Translate](https://github.com/ngstack/core/tree/master/projects/translate): translation library
+* [Code Editor](https://github.com/ngstack/core/tree/master/projects/code-editor): code editing component based on the editor that powers Visual Studio Code
+* [Electron](https://github.com/ngstack/core/tree/master/projects/electron): set of utilities for Electron integration
