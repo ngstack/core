@@ -11,7 +11,7 @@ export interface TypingInfo {
 @Injectable()
 export class CodeEditorService {
   // baseUrl = 'assets/monaco';
-  baseUrl = 'https://unpkg.com/monaco-editor@0.11.1/min';
+  baseUrl = 'https://unpkg.com/monaco-editor/min';
 
   // typingsWorkerUrl = 'assets/workers/typings-worker.js';
   typingsWorkerUrl = 'https://unpkg.com/@ngstack/code-editor/workers/typings-worker.js';
