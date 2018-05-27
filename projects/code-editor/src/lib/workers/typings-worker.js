@@ -13,7 +13,7 @@ const loadContent = async url => {
   try {
     const existing = downloaded[url];
     if (existing) {
-      return downloaded;
+      return existing;
     }
 
     const response = await fetch(url);
@@ -32,13 +32,19 @@ const loadContent = async url => {
 };
 
 const getIndex = async lib => {
-  const packageUrl = `${PACKAGES_SOURCE}/${lib}/package.json`;
-  const content = await loadContent(packageUrl);
+  let packageUrl = `${PACKAGES_SOURCE}/${lib}/package.json`;
+  let content = await loadContent(packageUrl);
 
   if (content) {
     const json = JSON.parse(content);
     if (json.typings) {
       return new URL(json.typings, packageUrl).href;
+    }
+
+    packageUrl = `${PACKAGES_SOURCE}/${lib}/index.d.ts`;
+    content = await loadContent(packageUrl);
+    if (content) {
+      return new URL(packageUrl).href;
     }
   }
 
