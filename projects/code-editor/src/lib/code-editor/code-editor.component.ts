@@ -10,10 +10,11 @@ import {
   Input,
   Output,
   EventEmitter,
-  SimpleChanges
+  SimpleChanges,
+  OnInit
 } from '@angular/core';
-
-import { CodeEditorService } from './../code-editor.service';
+import { Subscription } from 'rxjs';
+import { CodeEditorService, TypingsInfo } from './../code-editor.service';
 
 declare const monaco: any;
 
@@ -27,7 +28,7 @@ declare const monaco: any;
   host: { class: 'ngs-code-editor' }
 })
 export class CodeEditorComponent
-  implements OnChanges, OnDestroy, AfterViewInit {
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   private _editor: any;
   private model: any;
   private _value = '';
@@ -39,6 +40,8 @@ export class CodeEditorComponent
       enabled: false
     }
   };
+
+  private subscriptions: Subscription[] = [];
 
   @ViewChild('editor') editorContent: ElementRef;
 
@@ -90,26 +93,49 @@ export class CodeEditorComponent
 
   @Output() valueChanged = new EventEmitter<string>();
 
-  constructor(private editorService: CodeEditorService) {
-    editorService.typingsLoaded.subscribe(typings => {
-      if (this.language && this.language.toLowerCase() === 'typescript') {
-        // undocumented API
-        const libs = monaco.languages.typescript.typescriptDefaults.getExtraLibs();
+  constructor(private editorService: CodeEditorService) {}
 
-        typings.forEach(t => {
-          if (!libs[t.path]) {
-            // TODO: needs performance improvements, recreates its worker each time
-            monaco.languages.typescript.typescriptDefaults.addExtraLib(
-              t.content,
-              t.path
-            );
-          }
-        });
-      }
+  private onTypingsLoaded(typings: TypingsInfo) {
+    if (this.language && this.language.toLowerCase() === 'typescript') {
+      // undocumented API
+      const libs = monaco.languages.typescript.typescriptDefaults.getExtraLibs();
+      const files = typings.files || [];
+
+      files.forEach(file => {
+        if (!libs[file.path]) {
+          // TODO: needs performance improvements, recreates its worker each time
+          monaco.languages.typescript.typescriptDefaults.addExtraLib(
+            file.content,
+            file.path
+          );
+        }
+      });
+
+      this.updateTypescriptCompilerPaths(typings.entryPoints);
+    }
+  }
+
+  private updateTypescriptCompilerPaths(paths: { [key: string]: string } = {}) {
+    const compilerOptions = monaco.languages.typescript.typescriptDefaults.getCompilerOptions();
+    compilerOptions.paths = compilerOptions.paths || {};
+
+    Object.keys(paths).forEach(key => {
+      compilerOptions.paths[key] = [paths[key]];
     });
   }
 
+  ngOnInit() {
+    this.subscriptions.push(
+      this.editorService.typingsLoaded.subscribe(typings =>
+        this.onTypingsLoaded(typings)
+      )
+    );
+  }
+
   ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions = [];
+
     if (this._editor) {
       this._editor.dispose();
       this._editor = null;
@@ -195,7 +221,10 @@ export class CodeEditorComponent
       emitDecoratorMetadata: true,
       experimentalDecorators: true,
       allowNonTsExtensions: true,
-      declaration: true
+      declaration: true,
+      lib: ['es2017', 'dom'],
+      baseUrl: '.',
+      paths: {}
     });
 
     typescriptDefaults.setMaximumWorkerIdleTime(-1);

@@ -1,7 +1,7 @@
 // This worker resolves typings (.d.ts files) for the given list of dependencies.
 
 self.importScripts([
-  'https://cdnjs.cloudflare.com/ajax/libs/typescript/2.7.2/typescript.min.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/typescript/2.8.3/typescript.min.js'
 ]);
 
 const PACKAGES_SOURCE = 'https://unpkg.com';
@@ -53,7 +53,9 @@ const findReferences = sourceFile => {
       node.kind === ts.SyntaxKind.ImportDeclaration ||
       node.kind === ts.SyntaxKind.ExportDeclaration
     ) {
-      result.push(node.moduleSpecifier.text);
+      if (node.moduleSpecifier && node.moduleSpecifier.text) {
+        result.push(node.moduleSpecifier.text);
+      }
     }
     ts.forEachChild(node, scanNode);
   }
@@ -99,7 +101,7 @@ const resolveLibs = async (url, cache = {}) => {
   return result;
 };
 
-const getPackageTypings = async lib => {
+const getPackageTypings = async (lib, entryPoints) => {
   const libUrl = `${PACKAGES_SOURCE}/${lib}`;
 
   const existing = resolved[libUrl];
@@ -109,6 +111,8 @@ const getPackageTypings = async lib => {
 
   const indexUrl = await getIndex(lib);
   if (indexUrl) {
+    entryPoints[lib] = indexUrl.replace(PACKAGES_SOURCE, 'node_modules');
+
     const files = await resolveLibs(indexUrl);
 
     resolved[libUrl] = { files };
@@ -122,9 +126,11 @@ self.addEventListener('message', async e => {
   const { dependencies } = e.data;
 
   if (dependencies && dependencies.length > 0) {
+    const entryPoints = {};
+
     const result = await Promise.all(
-      dependencies.map(d => {
-        return getPackageTypings(d);
+      dependencies.map(libName => {
+        return getPackageTypings(libName, entryPoints);
       })
     );
 
@@ -137,6 +143,9 @@ self.addEventListener('message', async e => {
         };
       });
 
-    self.postMessage(files);
+    self.postMessage({
+      entryPoints: entryPoints,
+      files: files
+    });
   }
 });

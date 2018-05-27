@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export interface TypingInfo {
-  content: string;
-  name: string;
-  url: string;
-  path: string;
+export interface TypingsInfo {
+  entryPoints: { [key: string]: string };
+  files: Array<{
+    content: string;
+    name: string;
+    url: string;
+    path: string;
+  }>;
 }
 
 @Injectable()
@@ -16,7 +19,7 @@ export class CodeEditorService {
   // typingsWorkerUrl = 'assets/workers/typings-worker.js';
   typingsWorkerUrl = 'https://unpkg.com/@ngstack/code-editor/workers/typings-worker.js';
 
-  typingsLoaded = new Subject<TypingInfo[]>();
+  typingsLoaded = new Subject<TypingsInfo>();
 
   private typingsWorker: Worker;
 
