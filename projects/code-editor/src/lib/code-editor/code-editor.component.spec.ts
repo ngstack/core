@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CodeEditorComponent } from './code-editor.component';
 import { CodeEditorService } from '../services/code-editor.service';
 import { TypescriptDefaultsService } from '../services/typescript-defaults.service';
+import { JavascriptDefaultsService } from '../services/javascript-defaults.service';
 
 describe('CodeEditorComponent', () => {
   let component: CodeEditorComponent;
@@ -11,7 +12,11 @@ describe('CodeEditorComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CodeEditorComponent],
-      providers: [CodeEditorService, TypescriptDefaultsService]
+      providers: [
+        CodeEditorService,
+        TypescriptDefaultsService,
+        JavascriptDefaultsService
+      ]
     }).compileComponents();
   }));
 

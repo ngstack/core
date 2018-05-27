@@ -19,6 +19,7 @@ import {
   TypingsInfo
 } from '../services/code-editor.service';
 import { TypescriptDefaultsService } from '../services/typescript-defaults.service';
+import { JavascriptDefaultsService } from '../services/javascript-defaults.service';
 
 declare const monaco: any;
 
@@ -99,17 +100,17 @@ export class CodeEditorComponent
 
   constructor(
     private editorService: CodeEditorService,
-    private typescriptDefaults: TypescriptDefaultsService
+    private typescriptDefaults: TypescriptDefaultsService,
+    private javascriptDefaults: JavascriptDefaultsService
   ) {}
 
   private onTypingsLoaded(typings: TypingsInfo) {
-    if (this.language && this.language.toLowerCase() === 'typescript') {
-      this.typescriptDefaults.addExtraLibs(monaco, typings.files);
-      this.typescriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
-    }
-    if (this.language && this.language.toLowerCase() === 'javascript') {
-      // setup javascript defaults
-    }
+    // typescript
+    this.typescriptDefaults.addExtraLibs(monaco, typings.files);
+    this.typescriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
+    // javascript
+    this.javascriptDefaults.addExtraLibs(monaco, typings.files);
+    this.javascriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
   }
 
   ngOnInit() {

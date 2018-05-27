@@ -42,11 +42,12 @@ export class CodeEditorDemoComponent {
       language: 'javascript',
       code: `
         // JavaScript Example
-        "use strict";
+        import * as fs from 'fs';
 
         class Person {
           greet() {
             console.log('hello there');
+            fs.mkdir('folder');
           }
         }
       `
