@@ -28,6 +28,7 @@ export class CodeEditorDemoComponent {
         // TypeScript Example
         import { TranslateModule, TranslateService } from '@ngstack/translate';
         import { CodeEditorModule } from '@ngstack/code-editor';
+        import * as fs from 'fs';
 
         export class MyClass {
           constructor(translate: TranslateService) {

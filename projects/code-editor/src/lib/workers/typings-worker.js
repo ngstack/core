@@ -54,6 +54,14 @@ const getIndex = async lib => {
 const findReferences = sourceFile => {
   const result = [];
 
+  /**
+   * Resolve referenced files like:
+   * /// <reference path="./inspector.d.ts" />
+   */
+  if (sourceFile.referencedFiles.length > 0) {
+    result.push(...sourceFile.referencedFiles.map(ref => ref.fileName));
+  }
+
   function scanNode(node) {
     if (
       node.kind === ts.SyntaxKind.ImportDeclaration ||
@@ -95,7 +103,8 @@ const resolveLibs = async (url, cache = {}) => {
     const references = findReferences(sourceFile);
 
     for (const ref of references) {
-      const fileUrl = new URL(`${ref}.d.ts`, url).href;
+      const fileName = ref.endsWith('.d.ts') ? ref : `${ref}.d.ts`;
+      const fileUrl = new URL(fileName, url).href;
       const refLibs = await resolveLibs(fileUrl, cache);
 
       if (refLibs && refLibs.length > 0) {
