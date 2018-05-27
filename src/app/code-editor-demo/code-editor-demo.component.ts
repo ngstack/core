@@ -5,6 +5,7 @@ import {
   ElementRef,
   ViewEncapsulation
 } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-code-editor-demo',
@@ -19,23 +20,43 @@ export class CodeEditorDemoComponent {
     { name: 'High Contrast Dark', value: 'hc-black' }
   ];
 
-  dependencies: string[] = ['@ngstack/translate', '@ngstack/code-editor'];
+  demos = [
+    {
+      id: 'typescript',
+      language: 'typescript',
+      code: `
+        // TypeScript Example
+        import { TranslateModule, TranslateService } from '@ngstack/translate';
+        import { CodeEditorModule } from '@ngstack/code-editor';
+
+        export class MyClass {
+          constructor(translate: TranslateService) {
+
+          }
+        }
+      `
+    },
+    {
+      id: 'javascript',
+      language: 'javascript',
+      code: `
+        // JavaScript Example
+        "use strict";
+
+        class Person {
+          greet() {
+            console.log('hello there');
+          }
+        }
+      `
+    }
+  ];
+
+  selectedDemo = this.demos[0];
 
   @Input() activeTheme = 'vs';
-  @Input()
-  code = [
-    `import { TranslateModule, TranslateService } from '@ngstack/translate';`,
-    `import { CodeEditorModule } from '@ngstack/code-editor';`,
-    '',
-    `export class MyClass {`,
-    `  constructor(translate: TranslateService) {`,
-    '',
-    '  }',
-    `}`
-  ].join('\n');
-
+  @Input() code = this.demos[0].code;
   @Input() readOnly = false;
-
   @ViewChild('file') fileInput: ElementRef;
 
   options = {
@@ -44,6 +65,12 @@ export class CodeEditorDemoComponent {
       enabled: true
     }
   };
+
+  dependencies: string[] = [
+    '@types/node',
+    '@ngstack/translate',
+    '@ngstack/code-editor'
+  ];
 
   onCodeChanged(value) {
     // console.log('CODE', this.code);
@@ -64,5 +91,9 @@ export class CodeEditorDemoComponent {
       };
       reader.readAsText(file);
     }
+  }
+
+  onDemoChanged(event: MatSelectChange) {
+    this.code = event.value.code;
   }
 }

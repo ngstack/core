@@ -107,6 +107,9 @@ export class CodeEditorComponent
       this.typescriptDefaults.addExtraLibs(monaco, typings.files);
       this.typescriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
     }
+    if (this.language && this.language.toLowerCase() === 'javascript') {
+      // setup javascript defaults
+    }
   }
 
   ngOnInit() {
@@ -168,8 +171,18 @@ export class CodeEditorComponent
     const domElement: HTMLDivElement = this.editorContent.nativeElement;
 
     let uri = null;
-    if (this.language && this.language.toLowerCase() === 'typescript') {
-      uri = new monaco.Uri('main.ts');
+
+    if (this.language) {
+      switch (this.language.toLowerCase()) {
+        case 'typescript':
+          uri = new monaco.Uri('main.ts');
+          break;
+        case 'javascript':
+          uri = new monaco.Uri('main.js');
+          break;
+        default:
+          break;
+      }
     }
 
     this.model = monaco.editor.createModel(this.value, this.language, uri);
@@ -190,8 +203,11 @@ export class CodeEditorComponent
       }
     });
 
-    if (this.language && this.language.toLowerCase() === 'typescript') {
-      this.editorService.loadTypings(this.dependencies);
+    if (this.language) {
+      const lang = this.language.toLowerCase();
+      if (lang === 'typescript' || lang === 'javascript') {
+        this.editorService.loadTypings(this.dependencies);
+      }
     }
   }
 
