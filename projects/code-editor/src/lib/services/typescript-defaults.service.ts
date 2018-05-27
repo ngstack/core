@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
+import { CodeEditorService, TypingsInfo } from './code-editor.service';
 
 @Injectable()
 export class TypescriptDefaultsService {
+  private monaco: any;
+
+  constructor(codeEditorService: CodeEditorService) {
+    codeEditorService.loaded.subscribe(event => {
+      this.setup(event.monaco);
+    });
+    codeEditorService.typingsLoaded.subscribe(typings => {
+      this.updateTypings(typings);
+    });
+  }
+
   setup(monaco: any): void {
     if (!monaco) {
       return;
     }
+
+    this.monaco = monaco;
 
     const defaults = monaco.languages.typescript.typescriptDefaults;
 
@@ -34,34 +48,38 @@ export class TypescriptDefaultsService {
     */
   }
 
-  addExtraLibs(
-    monaco: any,
-    libs: Array<{ path: string; content: string }> = []
-  ): void {
-    if (!monaco || !libs || libs.length === 0) {
+  updateTypings(typings: TypingsInfo) {
+    if (typings) {
+      this.addExtraLibs(typings.files);
+      this.addLibraryPaths(typings.entryPoints);
+    }
+  }
+
+  addExtraLibs(libs: Array<{ path: string; content: string }> = []): void {
+    if (!this.monaco || !libs || libs.length === 0) {
       return;
     }
 
+    const defaults = this.monaco.languages.typescript.typescriptDefaults;
+
     // undocumented API
-    const existing = monaco.languages.typescript.typescriptDefaults.getExtraLibs();
+    const existing = defaults.getExtraLibs();
 
     libs.forEach(lib => {
       if (!existing[lib.path]) {
         // TODO: needs performance improvements, recreates its worker each time
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(
-          lib.content,
-          lib.path
-        );
+        defaults.addExtraLib(lib.content, lib.path);
       }
     });
   }
 
-  addLibraryPaths(monaco: any, paths: { [key: string]: string } = {}): void {
-    if (!monaco) {
+  addLibraryPaths(paths: { [key: string]: string } = {}): void {
+    if (!this.monaco) {
       return;
     }
 
-    const compilerOptions = monaco.languages.typescript.typescriptDefaults.getCompilerOptions();
+    const defaults = this.monaco.languages.typescript.typescriptDefaults;
+    const compilerOptions = defaults.getCompilerOptions();
     compilerOptions.paths = compilerOptions.paths || {};
 
     Object.keys(paths).forEach(key => {

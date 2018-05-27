@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
+import { CodeEditorService, TypingsInfo } from './code-editor.service';
 
 @Injectable()
 export class JavascriptDefaultsService {
+  private monaco: any;
+
+  constructor(codeEditorService: CodeEditorService) {
+    codeEditorService.loaded.subscribe(event => {
+      this.setup(event.monaco);
+    });
+    codeEditorService.typingsLoaded.subscribe(typings => {
+      this.updateTypings(typings);
+    });
+  }
+
   setup(monaco: any): void {
     if (!monaco) {
       return;
     }
+
+    this.monaco = monaco;
 
     const defaults = monaco.languages.typescript.javascriptDefaults;
 
@@ -28,15 +42,19 @@ export class JavascriptDefaultsService {
     */
   }
 
-  addExtraLibs(
-    monaco: any,
-    libs: Array<{ path: string; content: string }> = []
-  ): void {
-    if (!monaco || !libs || libs.length === 0) {
+  updateTypings(typings: TypingsInfo) {
+    if (typings) {
+      this.addExtraLibs(typings.files);
+      this.addLibraryPaths(typings.entryPoints);
+    }
+  }
+
+  addExtraLibs(libs: Array<{ path: string; content: string }> = []): void {
+    if (!this.monaco || !libs || libs.length === 0) {
       return;
     }
 
-    const defaults = monaco.languages.typescript.javascriptDefaults;
+    const defaults = this.monaco.languages.typescript.javascriptDefaults;
 
     // undocumented API
     const existing = defaults.getExtraLibs();
@@ -49,12 +67,12 @@ export class JavascriptDefaultsService {
     });
   }
 
-  addLibraryPaths(monaco: any, paths: { [key: string]: string } = {}): void {
-    if (!monaco) {
+  addLibraryPaths(paths: { [key: string]: string } = {}): void {
+    if (!this.monaco) {
       return;
     }
 
-    const defaults = monaco.languages.typescript.javascriptDefaults;
+    const defaults = this.monaco.languages.typescript.javascriptDefaults;
     const compilerOptions = defaults.getCompilerOptions();
     compilerOptions.paths = compilerOptions.paths || {};
 

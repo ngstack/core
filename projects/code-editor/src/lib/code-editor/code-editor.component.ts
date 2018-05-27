@@ -104,22 +104,7 @@ export class CodeEditorComponent
     private javascriptDefaults: JavascriptDefaultsService
   ) {}
 
-  private onTypingsLoaded(typings: TypingsInfo) {
-    // typescript
-    this.typescriptDefaults.addExtraLibs(monaco, typings.files);
-    this.typescriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
-    // javascript
-    this.javascriptDefaults.addExtraLibs(monaco, typings.files);
-    this.javascriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
-  }
-
-  ngOnInit() {
-    this.subscriptions.push(
-      this.editorService.typingsLoaded.subscribe(typings =>
-        this.onTypingsLoaded(typings)
-      )
-    );
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
