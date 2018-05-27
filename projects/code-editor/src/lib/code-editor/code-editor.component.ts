@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CodeEditorService, TypingsInfo } from './../code-editor.service';
+import { TypescriptDefaultsService } from '../../public_api';
 
 declare const monaco: any;
 
@@ -93,35 +94,16 @@ export class CodeEditorComponent
 
   @Output() valueChanged = new EventEmitter<string>();
 
-  constructor(private editorService: CodeEditorService) {}
+  constructor(
+    private editorService: CodeEditorService,
+    private typescriptDefaults: TypescriptDefaultsService
+  ) {}
 
   private onTypingsLoaded(typings: TypingsInfo) {
     if (this.language && this.language.toLowerCase() === 'typescript') {
-      // undocumented API
-      const libs = monaco.languages.typescript.typescriptDefaults.getExtraLibs();
-      const files = typings.files || [];
-
-      files.forEach(file => {
-        if (!libs[file.path]) {
-          // TODO: needs performance improvements, recreates its worker each time
-          monaco.languages.typescript.typescriptDefaults.addExtraLib(
-            file.content,
-            file.path
-          );
-        }
-      });
-
-      this.updateTypescriptCompilerPaths(typings.entryPoints);
+      this.typescriptDefaults.addExtraLibs(monaco, typings.files);
+      this.typescriptDefaults.addLibraryPaths(monaco, typings.entryPoints);
     }
-  }
-
-  private updateTypescriptCompilerPaths(paths: { [key: string]: string } = {}) {
-    const compilerOptions = monaco.languages.typescript.typescriptDefaults.getCompilerOptions();
-    compilerOptions.paths = compilerOptions.paths || {};
-
-    Object.keys(paths).forEach(key => {
-      compilerOptions.paths[key] = [paths[key]];
-    });
   }
 
   ngOnInit() {
@@ -206,38 +188,6 @@ export class CodeEditorComponent
     });
 
     if (this.language && this.language.toLowerCase() === 'typescript') {
-      this.setupTypescriptDefaults();
-    }
-  }
-
-  private async setupTypescriptDefaults() {
-    const typescriptDefaults = monaco.languages.typescript.typescriptDefaults;
-
-    typescriptDefaults.setCompilerOptions({
-      target: monaco.languages.typescript.ScriptTarget.ES6,
-      module: 'commonjs',
-      noEmit: true,
-      noLib: true,
-      emitDecoratorMetadata: true,
-      experimentalDecorators: true,
-      allowNonTsExtensions: true,
-      declaration: true,
-      lib: ['es2017', 'dom'],
-      baseUrl: '.',
-      paths: {}
-    });
-
-    typescriptDefaults.setMaximumWorkerIdleTime(-1);
-    typescriptDefaults.setEagerModelSync(true);
-
-    /*
-    typescriptDefaults.setDiagnosticsOptions({
-      noSemanticValidation: true,
-      noSyntaxValidation: true
-    });
-    */
-
-    if (this.dependencies && this.dependencies.length > 0) {
       this.editorService.loadTypings(this.dependencies);
     }
   }

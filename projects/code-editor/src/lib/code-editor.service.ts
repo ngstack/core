@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { TypescriptDefaultsService } from './typescript-defaults.service';
+
+declare const monaco: any;
 
 export interface TypingsInfo {
   entryPoints: { [key: string]: string };
@@ -22,6 +25,8 @@ export class CodeEditorService {
   typingsLoaded = new Subject<TypingsInfo>();
 
   private typingsWorker: Worker;
+
+  constructor(private typescriptDefaults: TypescriptDefaultsService) {}
 
   private loadTypingsWorker(): Worker {
     if (!this.typingsWorker && (<any>window).Worker) {
@@ -77,6 +82,7 @@ export class CodeEditorService {
         }
 
         (<any>window).require(['vs/editor/editor.main'], () => {
+          this.typescriptDefaults.setup(monaco);
           resolve();
         });
       };
