@@ -14,8 +14,11 @@ import {
   OnInit
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CodeEditorService, TypingsInfo } from './../code-editor.service';
-import { TypescriptDefaultsService } from '../../public_api';
+import {
+  CodeEditorService,
+  TypingsInfo
+} from '../services/code-editor.service';
+import { TypescriptDefaultsService } from '../services/typescript-defaults.service';
 
 declare const monaco: any;
 

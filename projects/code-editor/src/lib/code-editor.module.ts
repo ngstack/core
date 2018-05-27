@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
-import { CodeEditorService } from './code-editor.service';
-import { TypescriptDefaultsService } from './typescript-defaults.service';
+import { CodeEditorService } from './services/code-editor.service';
+import { TypescriptDefaultsService } from './services/typescript-defaults.service';
 
 @NgModule({
   imports: [CommonModule],

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CodeEditorComponent } from './code-editor.component';
-import { CodeEditorService } from '../code-editor.service';
-import { TypescriptDefaultsService } from '../typescript-defaults.service';
+import { CodeEditorService } from '../services/code-editor.service';
+import { TypescriptDefaultsService } from '../services/typescript-defaults.service';
 
 describe('CodeEditorComponent', () => {
   let component: CodeEditorComponent;
