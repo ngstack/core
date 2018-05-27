@@ -2,19 +2,18 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CodeEditorComponent } from './code-editor.component';
 import { CodeEditorService } from '../code-editor.service';
+import { TypescriptDefaultsService } from '../typescript-defaults.service';
 
 describe('CodeEditorComponent', () => {
   let component: CodeEditorComponent;
   let fixture: ComponentFixture<CodeEditorComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [CodeEditorComponent],
-        providers: [CodeEditorService]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CodeEditorComponent],
+      providers: [CodeEditorService, TypescriptDefaultsService]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CodeEditorComponent);
