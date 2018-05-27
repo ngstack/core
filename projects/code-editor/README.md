@@ -7,7 +7,7 @@ that powers [VS Code](https://github.com/Microsoft/vscode).
 
 ## Live demos
 
-* [Angular example (Stackblitz)](https://stackblitz.com/edit/ngstack-code-editor?file=app%2Fapp.component.html)
+* [Angular 6](https://stackblitz.com/edit/ngstack-code-editor-ng6)
 
 ## Installing
 
