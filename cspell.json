@@ -22,5 +22,5 @@
     "tooltips",
     "unindent"
   ],
-  "dictionaries": ["html"]
+  "dictionaries": ["en-gb", "html"]
 }
