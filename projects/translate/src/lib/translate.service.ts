@@ -13,6 +13,14 @@ export class TranslateService {
   private _translationRoot = 'assets/i18n';
 
   /**
+   * Toggles debug mode.
+   *
+   * When in the debug mode, the service automatically prepends active language id to very translated result.
+   * That allows to verify that your components support i18n correctly and do not contain hard-coded text.
+   */
+  debugMode = false;
+
+  /**
    * Disable caching and always download language files.
    *
    * Applies cache busting query parameters to urls, for example: '?v=1522426955882'.
@@ -238,6 +246,10 @@ export class TranslateService {
 
         result = result.replace(template, value);
       });
+    }
+
+    if (this.debugMode) {
+      result = `[${this.activeLang}] ${result}`;
     }
 
     return result;

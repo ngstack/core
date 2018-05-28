@@ -128,6 +128,7 @@ Now every time the language is changed, the page title is going to get changed a
 * Defining supported languages
 * Configurable cache busting
 * Lazy loading support
+* Visual debugging mode to simplify development and testing
 
 #### Using from code
 
@@ -212,6 +213,24 @@ You can use multiple values in the format string.
 Note, however, that TranslateService checks only the top-level properties of the parameter object.
 
 ## Advanced topics
+
+### Testing components
+
+When testing localisation with a single translation file it is sometimes hard to tell
+if a component text switches to a different language.
+You can simplify testing of the end-applications and components by enabling the debug mode.
+
+While in the debug mode, the service automatically prepends active language id to very translated result.
+That allows to verify that your components support i18n correctly and do not contain hard-coded text.
+
+```ts
+export function setupTranslateFactory(service: TranslateService): Function {
+  service.debugMode = true;
+  return () => service.use('en');
+}
+```
+
+Now, if using `en` as the active language, all strings should start with the `[en]` prefix.
 
 ### Watching for language change
 

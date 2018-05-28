@@ -13,6 +13,7 @@ import { CodeEditorDemoComponent } from './code-editor-demo/code-editor-demo.com
 import { CustomTranslatePipe } from './translate-demo/custom-translate.pipe';
 
 export function setupTranslateFactory(service: TranslateService): Function {
+  service.debugMode = true;
   return () => service.use('en');
 }
 
@@ -22,6 +23,8 @@ export function setupCodeEditorFactory(service: CodeEditorService): Function {
     service.baseUrl = 'assets/monaco';
     // Uncomment to use local Typings Worker
     service.typingsWorkerUrl = 'assets/workers/typings-worker.js';
+
+    return service;
   };
 }
 
