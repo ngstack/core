@@ -2,7 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/ngstack/core.svg?style=svg)](https://circleci.com/gh/ngstack/core)
 
-## Components
+An open source toolkit for enterprise Angular applications.
+
+## Libraries
 
 * [Translate](https://github.com/ngstack/core/tree/master/projects/translate): translation library
 * [Code Editor](https://github.com/ngstack/core/tree/master/projects/code-editor): code editing component based on the editor that powers Visual Studio Code

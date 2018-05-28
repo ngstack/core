@@ -96,9 +96,9 @@ The following options are used by default when Editor Component gets created:
 | ------------ | ------------- | --------------------------------------- |
 | valueChanged | string        | Raised after editor value gets changed. |
 
-## Typings (experimental)
+## Typings
 
-The editor is able to resolve typing libraries when set to the `Typescript` language.
+The editor is able to resolve typing libraries when set to the `Typescript` or `Javascript` language.
 
 Use `dependencies` property to provide a list of libraries to resolve
 
@@ -111,7 +111,11 @@ And in the controller class:
 
 ```ts
 export class MyEditorComponent {
-  dependencies: string[] = ['@ngstack/translate', '@ngstack/code-editor'];
+  dependencies: string[] = [
+    '@types/node',
+    '@ngstack/translate',
+    '@ngstack/code-editor'
+  ];
 }
 ```
 
@@ -123,6 +127,7 @@ Try pasting the following snippet at runtime:
 ```typescript
 import { TranslateModule, TranslateService } from '@ngstack/translate';
 import { CodeEditorModule } from '@ngstack/code-editor';
+import * as fs from 'fs';
 
 export class MyClass {
   constructor(translate: TranslateService) {}

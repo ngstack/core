@@ -1,7 +1,7 @@
 {
   "name": "@ngstack/electron",
   "description": "Angular library that provides integration with Electron",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "author": {
     "name": "Denys Vuika",

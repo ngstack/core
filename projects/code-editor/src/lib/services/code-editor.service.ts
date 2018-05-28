@@ -13,7 +13,9 @@ export interface TypingsInfo {
   }>;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CodeEditorService {
   // baseUrl = 'assets/monaco';
   baseUrl = 'https://unpkg.com/monaco-editor/min';

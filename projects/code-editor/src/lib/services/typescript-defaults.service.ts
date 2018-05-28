@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CodeEditorService, TypingsInfo } from './code-editor.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class TypescriptDefaultsService {
   private monaco: any;
 

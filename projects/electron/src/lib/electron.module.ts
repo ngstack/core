@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { ElectronComponent } from './electron.component';
+import { CommonModule } from '@angular/common';
+import { ElectronService } from './electron.service';
 
 @NgModule({
-  imports: [
-  ],
-  declarations: [ElectronComponent],
-  exports: [ElectronComponent]
+  imports: [CommonModule],
+  providers: [ElectronService]
 })
-export class ElectronModule { }
+export class ElectronModule {}
