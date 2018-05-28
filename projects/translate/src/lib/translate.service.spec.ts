@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
 import { TranslateService } from './translate.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -570,17 +570,24 @@ describe('TranslateService', () => {
     translate.activeLang = 'fr';
   });
 
-  it('should raise an event only when language value is changed', () => {
+  it('should raise an event only when language value is changed', async done => {
+    await translate.use('en', { key: 'value ' });
+    await translate.use('fr', { key: 'value ' });
+    await translate.use('it', { key: 'value ' });
+
     translate.activeLang = 'en';
 
     let count = 0;
-    translate.activeLangChanged.subscribe(() => count++);
+    translate.activeLangChanged.subscribe(() => {
+      count++;
+      if (count === 2) {
+        done();
+      }
+    });
 
     translate.activeLang = 'fr';
     translate.activeLang = 'it';
     translate.activeLang = 'it';
-
-    expect(count).toBe(2);
   });
 
   it('should provide previous and current value for changed event', done => {

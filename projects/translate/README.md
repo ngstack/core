@@ -83,6 +83,40 @@ In the main application template, use the following snippet:
 * `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
 * `<element>{{ 'FORMAT' | translate:params }}</element>`
 
+### Title Service
+
+* Sets page title value with automatic translation
+* Watches for language changes and updates the title accordingly
+
+#### Translating application title
+
+Update the localization files for your application and add `APP.TITLE` resource key:
+
+```json
+{
+  "APP": {
+    "TITLE": "My Application"
+  }
+}
+```
+
+Update the title from the code, the main application component is a perfect place for that:
+
+```ts
+import { TitleService } from '@ngstack/translate';
+
+@Component({...})
+export class AppComponent implements OnInit {
+  constructor(private titleService: TitleService) {}
+
+  ngOnInit() {
+    this.titleService.setTitle('APP.TITLE');
+  }
+}
+```
+
+Now every time the language is changed, the page title is going to get changed automatically.
+
 ### Translate Service
 
 * Load translations on language change

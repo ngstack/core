@@ -63,11 +63,11 @@ export class TranslateService {
 
     if (changed) {
       this._activeLang = newValue;
-      this.use(newValue);
-
-      this.activeLangChanged.next({
-        previousValue: previousValue,
-        currentValue: newValue
+      this.use(newValue).then(() => {
+        this.activeLangChanged.next({
+          previousValue: previousValue,
+          currentValue: newValue
+        });
       });
     }
   }

@@ -1,4 +1,7 @@
 {
+  "APP": {
+    "TITLE": "[ua] NgStack Demo Application"
+  },
   "TITLE": "[ua] Hello from NgStack/translate!",
   "FORMATTED": {
     "HELLO_MESSAGE": "[ua] Hello, {username}!"
