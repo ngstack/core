@@ -603,4 +603,17 @@ describe('TranslateService', () => {
 
     translate.activeLang = 'it';
   });
+
+  it('should transform resulting values in debug mode', () => {
+    translate.use('en', { key: 'value' });
+    translate.activeLang = 'en';
+
+    expect(translate.get('key')).toBe('value');
+
+    translate.debugMode = true;
+    expect(translate.get('key')).toBe('[en] value');
+
+    translate.activeLang = 'fr';
+    expect(translate.get('key')).toBe('[fr] value');
+  });
 });
