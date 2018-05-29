@@ -42,13 +42,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
 }
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    NxModule.forRoot(),
-
-    HttpClientModule,
-    TranslateModule.forRoot()
-  ],
+  imports: [BrowserModule, HttpClientModule, TranslateModule.forRoot()],
   declarations: [AppComponent],
   providers: [
     TranslateService,
