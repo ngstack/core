@@ -65,14 +65,19 @@ export class TypescriptDefaultsService {
     const defaults = this.monaco.languages.typescript.typescriptDefaults;
 
     // undocumented API
-    const existing = defaults.getExtraLibs();
+    const registeredLibs = defaults.getExtraLibs();
 
     libs.forEach(lib => {
-      if (!existing[lib.path]) {
-        // TODO: needs performance improvements, recreates its worker each time
-        defaults.addExtraLib(lib.content, lib.path);
+      if (!registeredLibs[lib.path]) {
+        // needs performance improvements, recreates its worker each time
+        // defaults.addExtraLib(lib.content, lib.path);
+        // undocumented API
+        defaults._extraLibs[lib.path] = lib.content;
       }
     });
+
+    // undocumented API
+    defaults._onDidChange.fire(defaults);
   }
 
   addLibraryPaths(paths: { [key: string]: string } = {}): void {
