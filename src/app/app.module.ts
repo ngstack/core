@@ -2,7 +2,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Route } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngstack/translate';
-import { CodeEditorModule, CodeEditorService } from '@ngstack/code-editor';
+import { CodeEditorModule } from '@ngstack/code-editor';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -15,17 +15,6 @@ import { CustomTranslatePipe } from './translate-demo/custom-translate.pipe';
 export function setupTranslateFactory(service: TranslateService): Function {
   // service.debugMode = true;
   return () => service.use('en');
-}
-
-export function setupCodeEditorFactory(service: CodeEditorService): Function {
-  return () => {
-    // Uncomment to use local Monaco installation
-    service.baseUrl = 'assets/monaco';
-    // Uncomment to use local Typings Worker
-    service.typingsWorkerUrl = 'assets/workers/typings-worker.js';
-
-    return service;
-  };
 }
 
 const routes: Route[] = [
@@ -50,7 +39,12 @@ const routes: Route[] = [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
     TranslateModule.forRoot(),
-    CodeEditorModule.forRoot(),
+    CodeEditorModule.forRoot({
+      // use local Monaco installation
+      baseUrl: 'assets/monaco',
+      // use local Typings Worker
+      typingsWorkerUrl: 'assets/workers/typings-worker.js'
+    }),
     MatButtonModule,
     MatSelectModule
   ],
@@ -65,12 +59,6 @@ const routes: Route[] = [
       provide: APP_INITIALIZER,
       useFactory: setupTranslateFactory,
       deps: [TranslateService],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: setupCodeEditorFactory,
-      deps: [CodeEditorService],
       multi: true
     }
   ],

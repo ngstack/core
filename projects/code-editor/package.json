@@ -1,7 +1,7 @@
 {
   "name": "@ngstack/code-editor",
   "description": "Code editor component for Angular applications.",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "license": "MIT",
   "author": {
     "name": "Denys Vuika",
@@ -17,12 +17,12 @@
     "type": "git",
     "url": "https://github.com/ngstack/core.git"
   },
-  "homepage": "https://github.com/ngstack/core/tree/master/libs/code-editor",
+  "homepage": "https://github.com/ngstack/core/tree/master/projects/code-editor",
   "bugs": {
     "url": "https://github.com/ngstack/core/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0"
   }
 }

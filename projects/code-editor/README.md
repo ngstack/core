@@ -7,7 +7,7 @@ that powers [VS Code](https://github.com/Microsoft/vscode).
 
 ## Live demos
 
-* [Angular 6](https://stackblitz.com/edit/ngstack-code-editor-ng6)
+- [Angular 6](https://stackblitz.com/edit/ngstack-code-editor-ng6)
 
 ## Installing
 
@@ -163,26 +163,13 @@ Update the main application module and setup the service to use the custom `base
 ```ts
 import { CodeEditorModule, CodeEditorService } from '@ngstack/code-editor';
 
-export function setupCodeEditorFactory(service: CodeEditorService): Function {
-  return () => {
-    service.baseUrl = 'assets/monaco';
-  };
-}
-
 @NgModule({
   ...,
   imports: [
     ...,
-    CodeEditorModule.forRoot()
-  ],
-  providers: [
-    ...,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: setupCodeEditorFactory,
-      deps: [CodeEditorService],
-      multi: true
-    }
+    CodeEditorModule.forRoot({
+      baseUrl: 'assets/monaco'
+    })
   ],
   ...
 })
@@ -204,26 +191,13 @@ Update the `.angular-cli.json` file and append the following asset rule:
 Then update the `CodeEditorService` configuration at the application startup:
 
 ```ts
-export function setupCodeEditorFactory(service: CodeEditorService): Function {
-  return () => {
-    service.typingsWorkerUrl = 'assets/workers/typings-worker.js';
-  };
-}
-
 @NgModule({
   ...,
   imports: [
     ...,
-    CodeEditorModule.forRoot()
-  ],
-  providers: [
-    ...,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: setupCodeEditorFactory,
-      deps: [CodeEditorService],
-      multi: true
-    }
+    CodeEditorModule.forRoot({
+      typingsWorkerUrl: 'assets/workers/typings-worker.js'
+    })
   ],
   ...
 })
