@@ -1,7 +1,7 @@
 {
   "name": "@ngstack/translate",
   "description": "Translation library for Angular and Ionic applications.",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "license": "MIT",
   "author": {
     "name": "Denys Vuika",
@@ -23,7 +23,7 @@
     "url": "https://github.com/ngstack/core/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0"
   }
 }

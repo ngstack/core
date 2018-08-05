@@ -1,7 +1,7 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Route } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngstack/translate';
+import { TranslateModule } from '@ngstack/translate';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,11 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateDemoComponent } from './translate-demo/translate-demo.component';
 import { CodeEditorDemoComponent } from './code-editor-demo/code-editor-demo.component';
 import { CustomTranslatePipe } from './translate-demo/custom-translate.pipe';
-
-export function setupTranslateFactory(service: TranslateService): Function {
-  // service.debugMode = true;
-  return () => service.use('en');
-}
 
 const routes: Route[] = [
   {
@@ -38,7 +33,9 @@ const routes: Route[] = [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, { initialNavigation: 'enabled' }),
-    TranslateModule.forRoot(),
+    TranslateModule.forRoot({
+      activeLang: 'en'
+    }),
     CodeEditorModule.forRoot({
       // use local Monaco installation
       baseUrl: 'assets/monaco',
@@ -53,14 +50,6 @@ const routes: Route[] = [
     TranslateDemoComponent,
     CodeEditorDemoComponent,
     CustomTranslatePipe
-  ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: setupTranslateFactory,
-      deps: [TranslateService],
-      multi: true
-    }
   ],
   bootstrap: [AppComponent]
 })

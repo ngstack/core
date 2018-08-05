@@ -4,13 +4,13 @@ Translation library for Angular applications.
 
 ## Live demos
 
-* Angular 6
+- Angular 6
 
-  * [Angular example (live)](https://stackblitz.com/edit/ngstack-translate-angular6)
+  - [Angular example (live)](https://stackblitz.com/edit/ngstack-translate-angular6)
 
-* Angular 5
-  * [Angular example (live)](https://stackblitz.com/edit/ngstack-translate-angular)
-  * [Ionic example (live)](https://stackblitz.com/edit/ngstack-translate-ionic)
+- Angular 5
+  - [Angular example (live)](https://stackblitz.com/edit/ngstack-translate-angular)
+  - [Ionic example (live)](https://stackblitz.com/edit/ngstack-translate-ionic)
 
 ## Installing
 
@@ -37,22 +37,15 @@ You will also need `HttpClientModule` module dependency.
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngstack/translate';
 
-export function setupTranslateFactory(service: TranslateService): Function {
-  return () => service.use('en');
-}
-
 @NgModule({
-  imports: [BrowserModule, HttpClientModule, TranslateModule.forRoot()],
-  declarations: [AppComponent],
-  providers: [
-    TranslateService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: setupTranslateFactory,
-      deps: [TranslateService],
-      multi: true
-    }
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      activeLang: 'en'
+    })
   ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
@@ -70,17 +63,17 @@ In the main application template, use the following snippet:
 
 ### Translate Pipe
 
-* `<element>{{ 'KEY' | translate }}</element>`
-* `<element [attribute]="property | translate"></element>`
-* `<element attribute="{{ property | translate }}"></element>`
-* `<element [innerHTML]="'KEY' | translate"></element>`
-* `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
-* `<element>{{ 'FORMAT' | translate:params }}</element>`
+- `<element>{{ 'KEY' | translate }}</element>`
+- `<element [attribute]="property | translate"></element>`
+- `<element attribute="{{ property | translate }}"></element>`
+- `<element [innerHTML]="'KEY' | translate"></element>`
+- `<element>{{ 'PROPERTY.PATH' | translate }}</element>`
+- `<element>{{ 'FORMAT' | translate:params }}</element>`
 
 ### Title Service
 
-* Sets page title value with automatic translation
-* Watches for language changes and updates the title accordingly
+- Sets page title value with automatic translation
+- Watches for language changes and updates the title accordingly
 
 #### Translating application title
 
@@ -113,16 +106,16 @@ Now every time the language is changed, the page title is going to get changed a
 
 ### Translate Service
 
-* Load translations on language change
-* Translation from code
-* Defining translation data from code
-* Merging multiple translations
-* Loading translations from multiple locations
-* Automatic fallback for missing translations
-* Defining supported languages
-* Configurable cache busting
-* Lazy loading support
-* Visual debugging mode to simplify development and testing
+- Load translations on language change
+- Translation from code
+- Defining translation data from code
+- Merging multiple translations
+- Loading translations from multiple locations
+- Automatic fallback for missing translations
+- Defining supported languages
+- Configurable cache busting
+- Lazy loading support
+- Visual debugging mode to simplify development and testing
 
 #### Using from code
 
@@ -208,6 +201,28 @@ Note, however, that TranslateService checks only the top-level properties of the
 
 ## Advanced topics
 
+You can provide custom parameters for the `forRoot` method of the `TranslateModule`
+
+```ts
+interface TranslateSettings {
+  debugMode?: boolean;
+  disableCache?: boolean;
+  supportedLangs?: string[];
+  translationRoot?: string;
+  translatePaths?: string[];
+  activeLang?: string;
+}
+```
+
+For example:
+
+```ts
+TranslateModule.forRoot({
+  debugMode: true,
+  activeLang: 'fr'
+});
+```
+
 ### Testing components
 
 When testing localisation with a single translation file it is sometimes hard to tell
@@ -218,10 +233,9 @@ While in the debug mode, the service automatically prepends active language id t
 That allows to verify that your components support i18n correctly and do not contain hard-coded text.
 
 ```ts
-export function setupTranslateFactory(service: TranslateService): Function {
-  service.debugMode = true;
-  return () => service.use('en');
-}
+TranslateModule.forRoot({
+  debugMode: true
+});
 ```
 
 Now, if using `en` as the active language, all strings should start with the `[en]` prefix.
@@ -253,10 +267,9 @@ By default TranslateService loads files stored at `assets/i18n` folder.
 You can change the `TranslateService.translationRoot` property to point to a custom location if needed.
 
 ```ts
-export function setupTranslateFactory(service: TranslateService): Function {
-  service.translationRoot = '/some/path';
-  return () => service.use('en');
-}
+TranslateModule.forRoot({
+  translationRoot: '/some/path'
+});
 ```
 
 ### Loading from multiple locations
@@ -264,10 +277,9 @@ export function setupTranslateFactory(service: TranslateService): Function {
 To provide multiple locations use the `TranslateService.translatePaths` collection property.
 
 ```ts
-export function setupTranslateFactory(service: TranslateService): Function {
-  service.translatePaths = ['assets/lib1/i18n', 'assets/lib2/i18n'];
-  return () => service.use('en');
-}
+TranslateModule.forRoot({
+  translatePaths: ['assets/lib1/i18n', 'assets/lib2/i18n']
+});
 ```
 
 The files are getting fetched and merged in the order of declarations,
@@ -278,10 +290,9 @@ and applied on the top of the default data loaded from `TranslateService.transla
 You can disable browser caching and force application always load translation files by using `TranslateService.disableCache` property.
 
 ```ts
-export function setupTranslateFactory(service: TranslateService): Function {
-  service.disableCache = true;
-  return () => service.use('en');
-}
+TranslateModule.forRoot({
+  disableCache: true
+});
 ```
 
 ### Restricting supported languages
@@ -290,10 +301,9 @@ It is possible to restrict supported languages to a certain set of values.
 You can avoid unnecessary HTTP calls by providing `TranslateService.supportedLangs` values.
 
 ```ts
-export function setupTranslateFactory(service: TranslateService): Function {
-  service.supportedLangs = ['fr', 'de'];
-  return () => service.use('en');
-}
+TranslateModule.forRoot({
+  supportedLangs: ['fr', 'de']
+});
 ```
 
 The service will try to load resource files only for given set of languages,
