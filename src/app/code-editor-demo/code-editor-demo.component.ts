@@ -51,20 +51,31 @@ export class CodeEditorDemoComponent {
           }
         }
       `
+    },
+    {
+      id: 'json',
+      language: 'json',
+      code: [
+        '{',
+        '    "$schema": "http://myserver/foo-schema.json",',
+        '    "p1": "v3",',
+        '    "p2": false',
+        '}'
+      ].join('\n')
     }
   ];
 
-  selectedDemo = this.demos[0];
+  selectedDemo = this.demos[2];
 
   @Input() activeTheme = 'vs';
-  @Input() code = this.demos[0].code;
+  @Input() code = this.demos[2].code;
   @Input() readOnly = false;
   @ViewChild('file') fileInput: ElementRef;
 
   options = {
     contextmenu: true,
     minimap: {
-      enabled: true
+      enabled: false
     }
   };
 

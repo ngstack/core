@@ -14,12 +14,10 @@ import {
   OnInit
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import {
-  CodeEditorService,
-  TypingsInfo
-} from '../services/code-editor.service';
+import { CodeEditorService } from '../services/code-editor.service';
 import { TypescriptDefaultsService } from '../services/typescript-defaults.service';
 import { JavascriptDefaultsService } from '../services/javascript-defaults.service';
+import { JsonDefaultsService } from '../services/json-defaults.service';
 
 declare const monaco: any;
 
@@ -101,7 +99,8 @@ export class CodeEditorComponent
   constructor(
     private editorService: CodeEditorService,
     private typescriptDefaults: TypescriptDefaultsService,
-    private javascriptDefaults: JavascriptDefaultsService
+    private javascriptDefaults: JavascriptDefaultsService,
+    private jsonDefaults: JsonDefaultsService
   ) {}
 
   ngOnInit() {}
@@ -161,10 +160,13 @@ export class CodeEditorComponent
     if (this.language) {
       switch (this.language.toLowerCase()) {
         case 'typescript':
-          uri = new monaco.Uri('main.ts');
+          uri = monaco.Uri.file('main.ts');
           break;
         case 'javascript':
-          uri = new monaco.Uri('main.js');
+          uri = monaco.Uri.file('main.js');
+          break;
+        case 'json':
+          uri = monaco.Uri.file('main.json');
           break;
         default:
           break;

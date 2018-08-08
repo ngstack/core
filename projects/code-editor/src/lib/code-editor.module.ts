@@ -10,6 +10,7 @@ import { CodeEditorService } from './services/code-editor.service';
 import { TypescriptDefaultsService } from './services/typescript-defaults.service';
 import { JavascriptDefaultsService } from './services/javascript-defaults.service';
 import { CodeEditorSettings } from './editor-settings';
+import { JsonDefaultsService } from './services/json-defaults.service';
 
 export const EDITOR_SETTINGS = new InjectionToken<CodeEditorSettings>(
   'EDITOR_SETTINGS'
@@ -51,7 +52,8 @@ export class CodeEditorModule {
           multi: true
         },
         TypescriptDefaultsService,
-        JavascriptDefaultsService
+        JavascriptDefaultsService,
+        JsonDefaultsService
       ]
     };
   }
